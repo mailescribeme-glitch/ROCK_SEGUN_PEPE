@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REBELDÍA SONORA · El mapa del rock</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            background-image:
+                radial-gradient(circle at 20% 30%, #1a0a1a 0%, #0a0a0f 70%),
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 40px);
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(12, 12, 22, 0.92);
+            backdrop-filter: blur(16px);
+            border-radius: 48px;
+            padding: 35px 40px 45px;
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+            padding-bottom: 12px;
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2.4rem;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #f7d875, #f0a500, #f7d875);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 5s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header .sub {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: #70708a;
+            letter-spacing: 2px;
+            border-left: 2px solid #f0a500;
+            padding-left: 16px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: #60607a;
+            padding: 8px 0 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            margin-bottom: 18px;
+        }
+
+        .tagline span {
+            color: #f0a500;
+            font-weight: 400;
+        }
+
+        .credito {
+            text-align: right;
+            font-size: 0.75rem;
+            color: #50506a;
+            letter-spacing: 1px;
+            margin-top: -6px;
+            margin-bottom: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .credito strong {
+            color: #80809a;
+            font-weight: 400;
+        }
+
+        .leyenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            margin-bottom: 24px;
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.04);
+            justify-content: center;
+        }
+
+        .leyenda-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #a0a0b8;
+        }
+
+        .leyenda-item .color {
+            width: 26px;
+            height: 4px;
+            border-radius: 4px;
+        }
+
+        .line-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            margin-bottom: 26px;
+            justify-content: center;
+        }
+
+        .line-btn {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 7px 20px;
+            border-radius: 40px;
+            border: 1.5px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.02);
+            color: #8888a2;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .line-btn:hover {
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .line-btn.active {
+            background: rgba(255,215,0,0.05);
+            border-color: #f0a500;
+            color: #f7d875;
+            box-shadow: 0 0 30px rgba(240,165,0,0.06);
+        }
+
+        .line-btn[data-line="clasica"] { border-color: rgba(46, 204, 113, 0.25); }
+        .line-btn[data-line="clasica"].active { border-color: #2ecc71; color: #2ecc71; }
+
+        .line-btn[data-line="punk"] { border-color: rgba(231, 76, 60, 0.25); }
+        .line-btn[data-line="punk"].active { border-color: #e74c3c; color: #e74c3c; }
+
+        .line-btn[data-line="alternativo"] { border-color: rgba(52, 152, 219, 0.25); }
+        .line-btn[data-line="alternativo"].active { border-color: #3498db; color: #3498db; }
+
+        .line-btn[data-line="metal"] { border-color: rgba(136, 136, 136, 0.25); }
+        .line-btn[data-line="metal"].active { border-color: #aaa; color: #ddd; }
+
+        .line-btn[data-line="hardrock"] { border-color: rgba(230, 126, 34, 0.25); }
+        .line-btn[data-line="hardrock"].active { border-color: #e67e22; color: #e67e22; }
+
+        .line-btn[data-line="prog"] { border-color: rgba(155, 89, 182, 0.25); }
+        .line-btn[data-line="prog"].active { border-color: #9b59b6; color: #9b59b6; }
+
+        .line-btn[data-line="experimental"] { border-color: rgba(236, 240, 241, 0.12); }
+        .line-btn[data-line="experimental"].active { border-color: #ecf0f1; color: #ecf0f1; }
+
+        .line-btn[data-line="latino"] { border-color: rgba(241, 196, 15, 0.25); }
+        .line-btn[data-line="latino"].active { border-color: #f1c40f; color: #f1c40f; }
+
+        .line-btn[data-line="grunge"] { border-color: rgba(26, 188, 156, 0.25); }
+        .line-btn[data-line="grunge"].active { border-color: #1abc9c; color: #1abc9c; }
+
+        .line-btn[data-line="damas"] { border-color: rgba(233, 30, 99, 0.25); }
+        .line-btn[data-line="damas"].active { border-color: #e91e63; color: #e91e63; }
+
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 12px;
+            margin-bottom: 28px;
+            min-height: 50px;
+        }
+
+        .artist-chip {
+            padding: 10px 18px;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            color: #b8b8d0;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+
+        .artist-chip:hover {
+            background: rgba(255,215,0,0.04);
+            border-color: rgba(255,215,0,0.15);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .artist-chip.active {
+            background: rgba(240,165,0,0.10);
+            border-color: #f0a500;
+            color: #f7d875;
+        }
+
+        .no-artists {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #50506a;
+            font-size: 1rem;
+            padding: 24px 0;
+            font-weight: 300;
+        }
+
+        .artist-detail {
+            display: none;
+            animation: fadeSlide 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            background: rgba(16, 16, 30, 0.75);
+            border-radius: 28px;
+            padding: 28px 34px 34px;
+            border: 1px solid rgba(255,215,0,0.04);
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.25);
+            margin-top: 6px;
+        }
+
+        .artist-detail.show {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(14px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .artist-detail .top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+
+        .artist-detail .name {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #f5e6c8;
+            letter-spacing: 0.5px;
+        }
+
+        .artist-detail .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 10px;
+        }
+
+        .artist-detail .tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 14px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            background: rgba(240,165,0,0.07);
+            border: 1px solid rgba(240,165,0,0.12);
+            color: #f0c060;
+        }
+
+        .artist-detail .body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 26px;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 760px) {
+            .artist-detail .body { grid-template-columns: 1fr; }
+            .container { padding: 18px 14px; }
+            .header h1 { font-size: 1.5rem; }
+            .artist-detail .name { font-size: 1.4rem; }
+            .artists-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .credito { text-align: center; margin-top: 4px; }
+        }
+
+        .artist-detail .desc {
+            font-size: 1.02rem;
+            line-height: 1.7;
+            color: #cecee6;
+            font-weight: 300;
+        }
+
+        .artist-detail .desc strong {
+            color: #f0c060;
+            font-weight: 600;
+        }
+
+        .artist-detail .info-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 18px;
+            padding: 16px 20px 20px;
+            border-left: 3px solid #f0a500;
+        }
+
+        .artist-detail .info-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #f0a500;
+            margin-bottom: 10px;
+        }
+
+        .artist-detail .info-box ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+        }
+
+        .artist-detail .info-box ul li {
+            background: rgba(240,165,0,0.04);
+            padding: 3px 14px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #c0c0d8;
+            border: 1px solid rgba(255,215,0,0.04);
+        }
+
+        .artist-detail .info-box ul li::before {
+            content: "✦ ";
+            color: #f0a500;
+        }
+
+        .artist-detail .info-text {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: #a8a8c0;
+            font-weight: 300;
+            line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .artist-detail .info-text strong {
+            color: #f0c060;
+        }
+
+        .welcome {
+            text-align: center;
+            padding: 28px 10px 18px;
+            color: #50506a;
+        }
+
+        .welcome span {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .welcome h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 400;
+            font-size: 1rem;
+            color: #80809a;
+        }
+
+        .welcome p {
+            font-size: 0.95rem;
+            max-width: 420px;
+            margin: 4px auto 0;
+            color: #484862;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #383852;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(255,255,255,0.02);
+            padding-top: 16px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .footer strong {
+            color: #58587a;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>⚡ REBELDÍA SONORA</h1>
+        <span class="sub">el mapa del rock</span>
+    </div>
+
+    <div class="tagline">
+        "EL ROCK NO ES UN GÉNERO, ES UN <span>ESTADO DE REBELDÍA</span>"
+    </div>
+
+    <div class="credito">
+        ✧ curado por <strong>PEPE HUIDOBRO</strong> · cartógrafo de frecuencias, ingeniero de caos y devoto del riff eterno
+    </div>
+
+    <div class="leyenda">
+        <span class="leyenda-item"><span class="color" style="background:#2ecc71;"></span> Clásica</span>
+        <span class="leyenda-item"><span class="color" style="background:#e74c3c;"></span> Punk</span>
+        <span class="leyenda-item"><span class="color" style="background:#3498db;"></span> Alternativo</span>
+        <span class="leyenda-item"><span class="color" style="background:#aaa;"></span> Metal</span>
+        <span class="leyenda-item"><span class="color" style="background:#e67e22;"></span> Hard Rock</span>
+        <span class="leyenda-item"><span class="color" style="background:#9b59b6;"></span> Prog</span>
+        <span class="leyenda-item"><span class="color" style="background:#ecf0f1;"></span> Experimental</span>
+        <span class="leyenda-item"><span class="color" style="background:#f1c40f;"></span> Rock Latino</span>
+        <span class="leyenda-item"><span class="color" style="background:#1abc9c;"></span> Grunge</span>
+        <span class="leyenda-item"><span class="color" style="background:#e91e63;"></span> Damas del Rock</span>
+    </div>
+
+    <div class="line-selector" id="lineSelector"></div>
+
+    <div class="artists-grid" id="artistsGrid"></div>
+
+    <div class="artist-detail" id="artistDetail"></div>
+
+    <div class="welcome" id="welcome">
+        <span>🎸</span>
+        <h2>selecciona una línea · explora el mapa</h2>
+        <p>cada estación es una banda · cada transbordo, una conexión</p>
+    </div>
+
+    <div class="footer">
+        <strong>REBELDÍA SONORA</strong> · 2026 · el rock no muere, se reinventa
+    </div>
+</div>
+
+<script>
+    // ================================================================
+    //  BASE DE DATOS — ARTISTAS POR LÍNEA
+    // ================================================================
+
+    const data = {
+
+        // ---- LÍNEA CLÁSICA (VERDE) ----
+        clasica: {
+            label: 'Clásica',
+            color: '#2ecc71',
+            artists: [
+                {
+                    id: 'beatles',
+                    name: 'The Beatles',
+                    desc: 'La banda más influyente de la historia. Revolucionaron la música popular con su creatividad, experimentación en estudio y una evolución constante que va desde el pop sencillo hasta el psicodélico y el rock sinfónico. Su legado es la base del rock moderno.',
+                    influence: 'Influyeron en prácticamente todos los géneros del rock: pop, psicodelia, prog, metal, alternativo y más. Bandas como Pink Floyd, Radiohead, Nirvana y Oasis beben directamente de ellos.',
+                    influenced: ['Pink Floyd', 'Radiohead', 'Nirvana', 'Oasis', 'The Kinks']
+                },
+                {
+                    id: 'pinkfloyd',
+                    name: 'Pink Floyd',
+                    desc: 'Maestros del rock progresivo y la psicodelia. Crearon paisajes sonoros inmersivos con letras existenciales y una producción innovadora. Álbumes como "The Dark Side of the Moon" son experiencias completas.',
+                    influence: 'Influyeron en el rock alternativo, el art rock y el ambient. Radiohead, Muse y Tame Impala heredaron su obsesión por la atmósfera.',
+                    influenced: ['Radiohead', 'Muse', 'Tame Impala', 'Porcupine Tree', 'Steven Wilson']
+                },
+                {
+                    id: 'ledzeppelin',
+                    name: 'Led Zeppelin',
+                    desc: 'Reinventaron el blues eléctrico llevándolo a dimensiones épicas. Con la voz de Robert Plant, la guitarra de Jimmy Page y el groove de John Bonham, crearon himnos eternos.',
+                    influence: 'Sentaron las bases del hard rock y el heavy metal. Aerosmith, Guns N\' Roses y Soundgarden beben directamente de su fuego.',
+                    influenced: ['Aerosmith', 'Guns N\' Roses', 'Soundgarden', 'Foo Fighters']
+                },
+                {
+                    id: 'beachboys',
+                    name: 'The Beach Boys',
+                    desc: 'El sonido de California. Con armonías vocales perfectas y la genialidad de Brian Wilson, llevaron el pop rock a niveles de sofisticación sin igual, compitiendo directamente con The Beatles.',
+                    influence: 'Su enfoque en la producción y las armonías influenció a bandas como Queen, Fleet Foxes y el indie pop moderno.',
+                    influenced: ['Queen', 'Fleet Foxes', 'Animal Collective']
+                }
+            ]
+        },
+
+        // ---- LÍNEA PUNK (ROJA) ----
+        punk: {
+            label: 'Punk',
+            color: '#e74c3c',
+            artists: [
+                {
+                    id: 'ramones',
+                    name: 'The Ramones',
+                    desc: 'Los padres del punk rock. Ritmo rápido, guitarras distorsionadas, canciones cortas y una actitud de "menos es más". Su sonido crudo y directo cambió la música para siempre.',
+                    influence: 'Influyeron en el punk, el pop punk y el rock alternativo. Bandas como Green Day, Blink-182 y Nirvana les deben todo.',
+                    influenced: ['Green Day', 'Blink-182', 'Nirvana', 'The Clash']
+                },
+                {
+                    id: 'clash',
+                    name: 'The Clash',
+                    desc: 'No solo hicieron punk, lo convirtieron en un manifiesto político. Con ritmos urgentes, guitarras afiladas y una actitud de cambio social, demostraron que el rock puede ser ruido con propósito.',
+                    influence: 'El punk abrió la puerta al rock alternativo, al indie y al grunge. Bandas como Nirvana, Green Day y Rage Against The Machine llevan su espíritu.',
+                    influenced: ['Nirvana', 'Green Day', 'Rage Against The Machine', 'The Strokes']
+                },
+                {
+                    id: 'sexpistols',
+                    name: 'Sex Pistols',
+                    desc: 'La banda más provocadora del punk. Su caos, su actitud y su estética marcaron una generación y convirtieron al punk en un fenómeno global, aunque su carrera durara apenas dos años.',
+                    influence: 'Aunque efímeros, su impacto fue inmenso. Inspiraron a bandas post-punk, grunge y hardcore. Son la imagen del punk para el gran público.',
+                    influenced: ['Joy Division', 'Nirvana', 'Bad Religion', 'Black Flag']
+                },
+                {
+                    id: 'blackflag',
+                    name: 'Black Flag',
+                    desc: 'El punk se vuelve más agresivo y experimental. Con Henry Rollins en la voz, Black Flag llevó el hardcore a su extremo, con ritmos demoledores y letras de angustia y rabia.',
+                    influence: 'Influyeron en el hardcore, el metal alternativo y el post-hardcore. Bandas como Fugazi, Nirvana y Tool les deben mucho.',
+                    influenced: ['Fugazi', 'Nirvana', 'Tool', 'Deftones']
+                }
+            ]
+        },
+
+        // ---- LÍNEA ALTERNATIVO (AZUL) ----
+        alternativo: {
+            label: 'Alternativo',
+            color: '#3498db',
+            artists: [
+                {
+                    id: 'radiohead',
+                    name: 'Radiohead',
+                    desc: 'La banda más inclasificable del rock moderno. Han pasado del rock alternativo al art rock, la electrónica y la música clásica contemporánea. Su capacidad de reinvención es legendaria.',
+                    influence: 'Influyeron en el indie rock, el art pop y el rock experimental. Bandas como Coldplay, Muse y Arcade Fire les deben mucho.',
+                    influenced: ['Coldplay', 'Muse', 'Arcade Fire', 'Tame Impala']
+                },
+                {
+                    id: 'sonicyouth',
+                    name: 'Sonic Youth',
+                    desc: 'Pioneros del noise rock y el rock alternativo underground. Usaban guitarras desafinadas, ritmos atípicos y una estética artística que los convirtió en referentes de la vanguardia.',
+                    influence: 'Influyeron en el indie rock, el shoegaze y el post-rock. Bandas como Nirvana, Pavement y My Bloody Valentine les deben mucho.',
+                    influenced: ['Nirvana', 'Pavement', 'My Bloody Valentine', 'Arcade Fire']
+                },
+                {
+                    id: 'pixies',
+                    name: 'Pixies',
+                    desc: 'El puente entre el punk y el rock alternativo de los 90. Canciones con dinámicas de "quiet-loud-quiet" que influyeron directamente en el grunge y el indie rock.',
+                    influence: 'Influyeron en Nirvana, Pearl Jam, Radiohead y toda la escena alternativa de los 90.',
+                    influenced: ['Nirvana', 'Pearl Jam', 'Radiohead', 'The Strokes']
+                },
+                {
+                    id: 'rem',
+                    name: 'R.E.M.',
+                    desc: 'Los reyes del college rock. Con su sonido melódico, letras crípticas y una estética indie, R.E.M. llevó el rock alternativo al mainstream sin perder su esencia.',
+                    influence: 'Influyeron en bandas como Radiohead, Coldplay, The Smiths y todo el indie rock posterior.',
+                    influenced: ['Radiohead', 'Coldplay', 'The Smiths', 'The Strokes']
+                },
+                {
+                    id: 'muse',
+                    name: 'Muse',
+                    desc: 'Rock alternativo con influencias de prog, metal y música clásica. Canciones épicas, voces desgarradas, sintetizadores y guitarras pesadas. Son el rock de estadio del siglo XXI.',
+                    influence: 'Han influido en el rock moderno con su mezcla de géneros y su espectacularidad en vivo. Bandas como Nothing But Thieves les deben mucho.',
+                    influenced: ['Nothing But Thieves', 'Royal Blood', 'Highly Suspect']
+                }
+            ]
+        },
+
+        // ---- LÍNEA METAL (NEGRA) ----
+        metal: {
+            label: 'Metal',
+            color: '#aaa',
+            artists: [
+                {
+                    id: 'blacksabbath',
+                    name: 'Black Sabbath',
+                    desc: 'Los padres del heavy metal. Con sus acordes de tritono y letras oscuras, crearon el sonido pesado que definiría un género entero. Su influencia es incalculable.',
+                    influence: 'Todo el metal posterior les debe su existencia. Desde Metallica hasta Sleep, pasando por Korn y Slipknot.',
+                    influenced: ['Metallica', 'Slayer', 'Pantera', 'Korn', 'Sleep', 'Ghost']
+                },
+                {
+                    id: 'judaspriest',
+                    name: 'Judas Priest',
+                    desc: 'Los dioses del heavy metal clásico. Con su estética de cuero y tachuelas, sus guitarras gemelas y la voz operística de Rob Halford, definieron el sonido y la imagen del metal. Son los padres del "metal uniforme".',
+                    influence: 'Influyeron en el power metal, el speed metal y el thrash. Bandas como Iron Maiden, Metallica, Slayer y Helloween les deben gran parte de su sonido.',
+                    influenced: ['Iron Maiden', 'Metallica', 'Slayer', 'Helloween', 'Megadeth']
+                },
+                {
+                    id: 'ironmaiden',
+                    name: 'Iron Maiden',
+                    desc: 'El metal clásico en su máxima expresión. Guitarras gemelas, voces operísticas, letras de historia y ciencia ficción. Son la banda de heavy metal por excelencia.',
+                    influence: 'Influyeron en el power metal, el death metal y el metal progresivo. Bandas como Dream Theater, Slayer y Metallica les deben mucho.',
+                    influenced: ['Dream Theater', 'Slayer', 'Metallica', 'Trivium']
+                },
+                {
+                    id: 'metallica',
+                    name: 'Metallica',
+                    desc: 'Los reyes del thrash metal y el metal de estadio. Con su velocidad, agresividad y complejidad, llevaron el metal underground al mainstream sin perder su esencia.',
+                    influence: 'Influyeron en el nu metal, el metal progresivo y el metal alternativo. Bandas como Linkin Park, System of a Down y Avenged Sevenfold les deben mucho.',
+                    influenced: ['Linkin Park', 'System of a Down', 'Avenged Sevenfold', 'Machine Head']
+                },
+                {
+                    id: 'slayer',
+                    name: 'Slayer',
+                    desc: 'El thrash metal más extremo. Velocidad, distorsión, letras oscuras y una actitud feroz. Son la banda más pesada del thrash junto a Metallica.',
+                    influence: 'Influyeron en el death metal, el black metal y el metal extremo en general. Bandas como Behemoth y Lamb of God les deben mucho.',
+                    influenced: ['Behemoth', 'Lamb of God', 'Gojira', 'Meshuggah']
+                },
+                {
+                    id: 'tooll',
+                    name: 'Tool',
+                    desc: 'Metal progresivo, experimental y psicodélico. Ritmos complejos, atmósferas densas, letras filosóficas y una presencia escénica hipnótica. Son la banda más inclasificable del metal.',
+                    influence: 'Influyeron en el metal alternativo, el post-metal y el rock progresivo. Bandas como A Perfect Circle, Deftones y Karnivool les deben mucho.',
+                    influenced: ['A Perfect Circle', 'Deftones', 'Karnivool', 'TesseracT']
+                }
+            ]
+        },
+
+        // ---- LÍNEA HARD ROCK (NARANJA) ----
+        hardrock: {
+            label: 'Hard Rock',
+            color: '#e67e22',
+            artists: [
+                {
+                    id: 'acdc',
+                    name: 'AC/DC',
+                    desc: 'El hard rock en su estado más puro. Riffs simples pero demoledores, una energía inagotable y la voz rasposa de Brian Johnson (y antes Bon Scott). Son la banda de rock por excelencia: directa, potente y eterna.',
+                    influence: 'Influyeron en el hard rock, el metal y el rock de estadio. Bandas como Guns N\' Roses, Metallica, Foo Fighters y Airbourne beben directamente de su estilo.',
+                    influenced: ['Guns N\' Roses', 'Metallica', 'Foo Fighters', 'Airbourne', 'The Hellacopters']
+                },
+                {
+                    id: 'queen',
+                    name: 'Queen',
+                    desc: 'La banda más teatral y grandiosa del rock. Con Freddie Mercury al frente, fusionaron hard rock, ópera, glam y pop en un sonido único e inconfundible. Su legado es inmortal.',
+                    influence: 'Influyeron en el rock alternativo, el metal sinfónico y el pop. Bandas como Muse, Radiohead, My Chemical Romance y Panic! At The Disco les deben mucho.',
+                    influenced: ['Muse', 'Radiohead', 'My Chemical Romance', 'Panic! At The Disco', 'Foo Fighters']
+                },
+                {
+                    id: 'thewho',
+                    name: 'The Who',
+                    desc: 'Pioneros del rock de estadio y la ópera rock. Con su energía demoledora y la batería de Keith Moon, llevaron el hard rock a un nivel de espectáculo sin precedentes. Son la banda que definió el "rock de estadio".',
+                    influence: 'Influyeron en el punk, el hard rock y el rock alternativo. Bandas como The Clash, Pearl Jam, Green Day y Rush les deben mucho.',
+                    influenced: ['The Clash', 'Pearl Jam', 'Green Day', 'Rush', 'Foo Fighters']
+                },
+                {
+                    id: 'aerosmith',
+                    name: 'Aerosmith',
+                    desc: 'El hard rock americano por excelencia. Con su mezcla de blues, rock y actitud callejera, Aerosmith es la banda que mantuvo vivo el espíritu del hard rock en Estados Unidos durante décadas.',
+                    influence: 'Influyeron en el rock alternativo, el glam metal y el hard rock moderno. Bandas como Guns N\' Roses, Bon Jovi y Foo Fighters les deben mucho.',
+                    influenced: ['Guns N\' Roses', 'Bon Jovi', 'Foo Fighters', 'Stone Temple Pilots']
+                },
+                {
+                    id: 'gunsnroses',
+                    name: 'Guns N\' Roses',
+                    desc: 'La banda más peligrosa del rock. Con su mezcla de hard rock, punk y blues, y la actitud rebelde de Axl Rose y Slash, revivieron el rock en los 80 y 90 con un sonido sucio y glorioso.',
+                    influence: 'Influyeron en el rock alternativo, el nu metal y el hard rock moderno. Bandas como Velvet Revolver, Avenged Sevenfold y Buckcherry les deben mucho.',
+                    influenced: ['Velvet Revolver', 'Avenged Sevenfold', 'Buckcherry', 'Foo Fighters']
+                },
+                {
+                    id: 'vanhalen',
+                    name: 'Van Halen',
+                    desc: 'Revolucionaron la guitarra con Eddie Van Halen y su técnica de tapping. Su sonido es la mezcla perfecta de hard rock, glam y virtuosismo. Son la banda que llevó la guitarra a otro nivel.',
+                    influence: 'Influyeron en el glam metal, el shred y el rock moderno. Guitarristas como Steve Vai, Joe Satriani y bandas como Motley Crue les deben mucho.',
+                    influenced: ['Motley Crue', 'Steve Vai', 'Joe Satriani', 'Poison', 'Extreme']
+                },
+                {
+                    id: 'deeppurple',
+                    name: 'Deep Purple',
+                    desc: 'Junto a Led Zeppelin y Black Sabbath, son el tercer pilar del hard rock y el heavy metal. Su sonido se basa en la fusión del blues, el rock y la música clásica con un organo Hammond monumental.',
+                    influence: 'Influyeron en el metal, el prog y el hard rock. Bandas como Metallica, Dream Theater y Rainbow les deben mucho.',
+                    influenced: ['Metallica', 'Dream Theater', 'Rainbow', 'Whitesnake']
+                }
+            ]
+        },
+
+        // ---- LÍNEA PROG (VIOLETA) ----
+        prog: {
+            label: 'Progresivo',
+            color: '#9b59b6',
+            artists: [
+                {
+                    id: 'yes',
+                    name: 'Yes',
+                    desc: 'El prog sinfónico por excelencia. Técnica virtuosa, armonías complejas, letras místicas y estructuras épicas. Son la banda más compleja y brillante del género.',
+                    influence: 'Influyeron en el prog metal y el rock alternativo. Bandas como Rush, Dream Theater y Tool les deben mucho.',
+                    influenced: ['Rush', 'Dream Theater', 'Tool', 'Porcupine Tree']
+                },
+                {
+                    id: 'genesis',
+                    name: 'Genesis',
+                    desc: 'Prog con influencia teatral, folk y barroca. Con Peter Gabriel en sus inicios, su música era una mezcla de fantasía, música clásica y rock. Luego evolucionaron hacia el pop, pero su legado prog es inmortal.',
+                    influence: 'Influyeron en el art rock, el neo-prog y el rock alternativo. Bandas como Marillion, Radiohead y Muse les deben mucho.',
+                    influenced: ['Marillion', 'Radiohead', 'Muse', 'Steven Wilson']
+                },
+                {
+                    id: 'elp',
+                    name: 'Emerson, Lake & Palmer',
+                    desc: 'El prog más virtuoso y excesivo. Keith Emerson al teclado, Greg Lake al bajo y voz, y Carl Palmer a la batería. Su música es una mezcla de clásica, rock y jazz, con una energía arrolladora.',
+                    influence: 'Influyeron en el prog metal, el metal sinfónico y el rock experimental. Bandas como Dream Theater, Symphony X y Jordan Rudess les deben mucho.',
+                    influenced: ['Dream Theater', 'Symphony X', 'Rush', 'Tool']
+                },
+                {
+                    id: 'rush',
+                    name: 'Rush',
+                    desc: 'El power trío más influyente del rock. Geddy Lee (bajo), Alex Lifeson (guitarra) y Neil Peart (batería) crearon un sonido que mezcla hard rock, prog y metal con una técnica y complejidad inigualables.',
+                    influence: 'Influyeron en el metal progresivo, el rock alternativo y el hard rock. Bandas como Metallica, Dream Theater, Tool y Foo Fighters les deben mucho.',
+                    influenced: ['Metallica', 'Dream Theater', 'Tool', 'Foo Fighters', 'Muse']
+                }
+            ]
+        },
+
+        // ---- LÍNEA EXPERIMENTAL (BLANCO) ----
+        experimental: {
+            label: 'Experimental',
+            color: '#ecf0f1',
+            artists: [
+                {
+                    id: 'kingcrimson',
+                    name: 'King Crimson',
+                    desc: 'La banda más influyente del rock experimental. Con Robert Fripp a la cabeza, su sonido ha evolucionado desde el prog sinfónico hasta el metal experimental y la música de vanguardia. Su debut es el primer álbum de prog.',
+                    influence: 'Influyeron en el prog metal, el rock experimental y el post-rock. Bandas como Tool, Meshuggah y Radiohead les deben mucho.',
+                    influenced: ['Tool', 'Meshuggah', 'Radiohead', 'Porcupine Tree', 'Black Midi']
+                },
+                {
+                    id: 'frankzappa',
+                    name: 'Frank Zappa',
+                    desc: 'El genio más excéntrico del rock. Su música mezcla rock, jazz, clásica, y comedia. Nunca se tomó en serio a sí mismo, pero su legado es uno de los más importantes de la música del siglo XX.',
+                    influence: 'Influyó en el art rock, el rock experimental y el jazz fusion. Bandas como Primus, Mr. Bungle y Ween le deben mucho.',
+                    influenced: ['Primus', 'Mr. Bungle', 'Ween', 'Captain Beefheart']
+                }
+            ]
+        },
+
+        // ---- LÍNEA ROCK LATINO (ORO) ----
+        latino: {
+            label: 'Rock Latino',
+            color: '#f1c40f',
+            artists: [
+                {
+                    id: 'sodastereo',
+                    name: 'Soda Stereo',
+                    desc: 'La banda más importante del rock en español. Empezaron como new wave, evolucionaron hacia el rock alternativo y terminaron como una banda experimental. Su legado es inmenso en toda Latinoamérica.',
+                    influence: 'Influyeron en todo el rock latino posterior. Bandas como Babasónicos, Zoé y Los Bunkers les deben mucho.',
+                    influenced: ['Babasónicos', 'Zoé', 'Los Bunkers', 'Enjambre']
+                },
+                {
+                    id: 'caifanes',
+                    name: 'Caifanes',
+                    desc: 'El rock en español con alma oscura y mística. Su sonido mezcla rock, folk mexicano y post-punk. Son la banda más importante de México junto a Soda Stereo.',
+                    influence: 'Influyeron en el rock mexicano y latinoamericano. Bandas como Jaguares, Zoé y Hello Seahorse! les deben mucho.',
+                    influenced: ['Jaguares', 'Zoé', 'Hello Seahorse!', 'Los Amantes de Lola']
+                },
+                {
+                    id: 'heroes',
+                    name: 'Héroes del Silencio',
+                    desc: 'El rock en español más épico y europeo. Con la voz de Enrique Bunbury y una mezcla de rock, post-punk y flamenco, crearon himnos que siguen vigentes.',
+                    influence: 'Influyeron en el rock español y latinoamericano. Bandas como Mago de Oz, Ska-P y Dover les deben mucho.',
+                    influenced: ['Mago de Oz', 'Ska-P', 'Dover', 'Extremoduro']
+                }
+            ]
+        },
+
+        // ---- LÍNEA GRUNGE (VERDE MENTA) ----
+        grunge: {
+            label: 'Grunge',
+            color: '#1abc9c',
+            artists: [
+                {
+                    id: 'nirvana',
+                    name: 'Nirvana',
+                    desc: 'La banda que cambió el rock para siempre. Kurt Cobain canalizó el desencanto de una generación con guitarras distorsionadas, gritos desgarradores y una autenticidad cruda que derribó el glamour de los 80.',
+                    influence: 'El grunge mató el hair metal y dio paso al rock alternativo como corriente principal. Bandas como Foo Fighters, Pearl Jam y Radiohead llevan su ADN.',
+                    influenced: ['Foo Fighters', 'Pearl Jam', 'Radiohead', 'Courtney Barnett']
+                },
+                {
+                    id: 'pearljam',
+                    name: 'Pearl Jam',
+                    desc: 'El grunge con alma de rock clásico. Con Eddie Vedder en la voz, su sonido es más melódico y cercano al rock de estadio, pero con la autenticidad del grunge.',
+                    influence: 'Influyeron en el rock alternativo, el post-grunge y el rock de estadio. Bandas como Stone Temple Pilots, Creed y Nickelback les deben mucho.',
+                    influenced: ['Stone Temple Pilots', 'Creed', 'Nickelback', 'The Smashing Pumpkins']
+                },
+                {
+                    id: 'aliceinchains',
+                    name: 'Alice in Chains',
+                    desc: 'El grunge más oscuro y pesado. Con armonías vocales que recuerdan a los 70 y un sonido cercano al metal, son la banda más "heavy" del grunge.',
+                    influence: 'Influyeron en el rock alternativo y el metal alternativo. Bandas como Godsmack, Staind y Breaking Benjamin les deben mucho.',
+                    influenced: ['Godsmack', 'Staind', 'Breaking Benjamin', 'Days of the New']
+                },
+                {
+                    id: 'soundgarden',
+                    name: 'Soundgarden',
+                    desc: 'El grunge más complejo y técnico. Con la voz de Chris Cornell y guitarras afiladas, su sonido mezcla metal, punk y psicodelia. Son la banda más "progresiva" del grunge.',
+                    influence: 'Influyeron en el rock alternativo y el metal progresivo. Bandas como Audioslave, Queens of the Stone Age y Mastodon les deben mucho.',
+                    influenced: ['Audioslave', 'Queens of the Stone Age', 'Mastodon', 'Deftones']
+                }
+            ]
+        },
+
+        // ---- LÍNEA DAMAS DEL ROCK (ROSA) ----
+        damas: {
+            label: 'Damas del Rock',
+            color: '#e91e63',
+            artists: [
+                {
+                    id: 'janis',
+                    name: 'Janis Joplin',
+                    desc: 'La reina del blues rock. Con su voz desgarrada, su energía sobre el escenario y su espíritu libre, Janis rompió todos los moldes del rock en los 60. Era pura emoción y rebeldía hecha mujer.',
+                    influence: 'Influyó en el rock, el blues y el soul. Su estilo vocal inspiró a cantantes como Stevie Nicks, Grace Slick, y más tarde a Patti Smith y Courtney Love.',
+                    influenced: ['Stevie Nicks', 'Grace Slick', 'Patti Smith', 'Courtney Love', 'Alanis Morissette']
+                },
+                {
+                    id: 'pattismith',
+                    name: 'Patti Smith',
+                    desc: 'La poeta del punk. Con su voz spoken word y su actitud andrógina, Patti Smith conectó el underground neoyorquino con la poesía beat y el rock. Es la madrina del punk y una de las artistas más influyentes del siglo XX.',
+                    influence: 'Influyó en el punk, el post-punk y el rock alternativo. Su legado se siente en bandas como The Pretenders, Sonic Youth y Hole.',
+                    influenced: ['The Pretenders', 'Sonic Youth', 'Hole', 'Bikini Kill', 'Kurt Cobain']
+                },
+                {
+                    id: 'pretenders',
+                    name: 'The Pretenders',
+                    desc: 'Lideradas por Chrissie Hynde, The Pretenders mezclaron punk, new wave y rock clásico con una actitud feroz. Hynde es una de las guitarristas y compositoras más respetadas del rock.',
+                    influence: 'Influyeron en el rock alternativo y el indie rock. Bandas como The Strokes, Yeah Yeah Yeahs y The Kills les deben mucho.',
+                    influenced: ['The Strokes', 'Yeah Yeah Yeahs', 'The Kills', 'Arctic Monkeys']
+                },
+                {
+                    id: 'eurythmics',
+                    name: 'Eurythmics',
+                    desc: 'El duo de Annie Lennox y Dave Stewart revolucionó el pop rock de los 80 con su mezcla de new wave, synth-pop y soul. Lennox, con su voz poderosa y su estética andrógina, se convirtió en un ícono.',
+                    influence: 'Influyeron en el synth-pop, el rock alternativo y el pop moderno. Su legado se siente en artistas como Lady Gaga, Gwen Stefani y Miley Cyrus.',
+                    influenced: ['Lady Gaga', 'Gwen Stefani', 'Miley Cyrus', 'Florence Welch']
+                },
+                {
+                    id: 'bonnieraitt',
+                    name: 'Bonnie Raitt',
+                    desc: 'La reina del blues rock y el slide guitar. Con su técnica impecable y su voz llena de alma, Bonnie ha sido una de las guitarristas más respetadas por décadas, mezclando blues, rock y folk con una elegancia única.',
+                    influence: 'Influyó en el blues rock y el rock alternativo. Su legado se siente en artistas como Sheryl Crow, Susan Tedeschi y Grace Potter.',
+                    influenced: ['Sheryl Crow', 'Susan Tedeschi', 'Grace Potter', 'Kacey Musgraves']
+                }
+            ]
+        }
+    };
+
+    // ================================================================
+    //  LÓGICA DE INTERACCIÓN
+    // ================================================================
+
+    const lineSelector = document.getElementById('lineSelector');
+    const artistsGrid = document.getElementById('artistsGrid');
+    const artistDetail = document.getElementById('artistDetail');
+    const welcome = document.getElementById('welcome');
+
+    const lineKeys = Object.keys(data);
+    lineKeys.forEach((key) => {
+        const line = data[key];
+        const btn = document.createElement('button');
+        btn.className = 'line-btn';
+        btn.dataset.line = key;
+        btn.textContent = line.label;
+        btn.addEventListener('click', () => selectLine(key));
+        lineSelector.appendChild(btn);
+    });
+
+    function selectLine(lineKey) {
+        const line = data[lineKey];
+
+        document.querySelectorAll('.line-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.line-btn[data-line="${lineKey}"]`).classList.add('active');
+
+        welcome.style.display = 'none';
+        artistDetail.classList.remove('show');
+
+        renderArtists(lineKey);
+
+        if (line.artists.length > 0) {
+            selectArtist(line.artists[0].id);
+        }
+    }
+
+    function renderArtists(lineKey) {
+        const line = data[lineKey];
+        artistsGrid.innerHTML = '';
+
+        line.artists.forEach((artist) => {
+            const chip = document.createElement('div');
+            chip.className = 'artist-chip';
+            chip.textContent = artist.name;
+            chip.dataset.id = artist.id;
+            chip.addEventListener('click', () => selectArtist(artist.id));
+            artistsGrid.appendChild(chip);
+        });
+
+        if (line.artists.length === 0) {
+            artistsGrid.innerHTML = `<div class="no-artists">⋮ no hay estaciones en esta línea ⋮</div>`;
+        }
+    }
+
+    function selectArtist(artistId) {
+        document.querySelectorAll('.artist-chip').forEach(ch => {
+            ch.classList.toggle('active', ch.dataset.id === artistId);
+        });
+
+        let found = null;
+        let foundLine = null;
+        for (const [lineKey, line] of Object.entries(data)) {
+            const artist = line.artists.find(a => a.id === artistId);
+            if (artist) {
+                found = artist;
+                foundLine = lineKey;
+                break;
+            }
+        }
+
+        if (!found) return;
+
+        const lineColor = data[foundLine].color;
+
+        artistDetail.innerHTML = `
+            <div class="top">
+                <span class="name">${found.name}</span>
+                <div class="tags">
+                    <span class="tag" style="border-color:${lineColor}44; color:${lineColor};">${data[foundLine].label}</span>
+                </div>
+            </div>
+            <div class="body">
+                <div class="desc">
+                    <strong>▸</strong> ${found.desc}
+                </div>
+                <div class="info-box" style="border-color:${lineColor};">
+                    <h3 style="color:${lineColor};">✦ influencia y legado</h3>
+                    <ul>
+                        ${found.influenced.map(i => `<li>${i}</li>`).join('')}
+                    </ul>
+                    <div class="info-text">
+                        <strong style="color:${lineColor};">↳ influencia:</strong> ${found.influence}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        artistDetail.classList.add('show');
+    }
+
+    // Cargar la primera línea por defecto
+    selectLine('hardrock');
+</script>
+</body>
+</html>
