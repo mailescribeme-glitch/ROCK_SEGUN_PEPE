@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>REBELDÍA SONORA · El mapa del rock</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== RESET Y BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0d0d1a;
+            color: #e8e8f0;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            padding: 12px;
+            background-image: radial-gradient(ellipse at 30% 20%, #1a1028 0%, #0d0d1a 70%);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(20, 18, 30, 0.92);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 22px 18px 30px;
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), inset 0 0 80px rgba(255, 215, 0, 0.02);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 4px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+            padding-bottom: 10px;
+        }
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #f7d875, #f0a500, #f7d875);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 5s ease-in-out infinite;
+            line-height: 1.2;
+            text-shadow: none;
+        }
+        @keyframes shine {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .header .sub {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: #8888aa;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .tagline {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 300;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #666688;
+            padding: 6px 0 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        .tagline span {
+            color: #f0a500;
+            font-weight: 400;
+        }
+        .credito {
+            text-align: center;
+            font-size: 0.6rem;
+            color: #555577;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.5;
+        }
+        .credito strong {
+            color: #8888aa;
+            font-weight: 400;
+        }
+
+        /* ===== ESTADÍSTICAS ===== */
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            justify-content: center;
+            padding: 8px 16px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .stats-item {
+            font-size: 0.7rem;
+            color: #8888aa;
+            letter-spacing: 0.5px;
+        }
+        .stats-item strong {
+            color: #f0c060;
+            font-weight: 600;
+        }
+
+        /* ===== BÚSQUEDA ===== */
+        .search-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 160px;
+            max-width: 320px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: #e0e0ec;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            border-color: #f0a500;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 30px rgba(240, 165, 0, 0.05);
+        }
+        .search-input::placeholder {
+            color: #555577;
+        }
+
+        /* ===== FILTRO DÉCADA ===== */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px 8px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+        .filter-btn {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            color: #7777a0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+        .filter-btn:hover {
+            color: #c0c0e0;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .filter-btn.active {
+            background: rgba(240, 165, 0, 0.10);
+            border-color: #f0a500;
+            color: #f7d875;
+            box-shadow: 0 0 25px rgba(240, 165, 0, 0.05);
+        }
+        .filter-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== LEYENDA ===== */
+        .leyenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+            margin-bottom: 12px;
+            padding: 8px 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            justify-content: center;
+        }
+        .leyenda-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #8888aa;
+        }
+        .leyenda-item .color {
+            width: 16px;
+            height: 4px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        /* ===== SELECTOR DE LÍNEAS ===== */
+        .line-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px 6px;
+            margin-bottom: 14px;
+            justify-content: center;
+        }
+        .line-btn {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 5px 12px;
+            border-radius: 30px;
+            border: 1.5px solid rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.02);
+            color: #7777a0;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            min-height: 28px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .line-btn:hover {
+            color: #c0c0e0;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .line-btn:active {
+            transform: scale(0.95);
+        }
+        .line-btn.active {
+            background: rgba(255, 215, 0, 0.06);
+            border-color: #f0a500;
+            color: #f7d875;
+            box-shadow: 0 0 30px rgba(240, 165, 0, 0.06);
+        }
+
+        /* Colores dinámicos para líneas */
+        .line-btn[data-line="clasica"] { border-color: rgba(46, 204, 113, 0.2); }
+        .line-btn[data-line="clasica"].active { border-color: #2ecc71; color: #2ecc71; }
+        .line-btn[data-line="blues"] { border-color: rgba(26, 188, 156, 0.2); }
+        .line-btn[data-line="blues"].active { border-color: #1abc9c; color: #1abc9c; }
+        .line-btn[data-line="glam"] { border-color: rgba(233, 30, 99, 0.2); }
+        .line-btn[data-line="glam"].active { border-color: #e91e63; color: #e91e63; }
+        .line-btn[data-line="hardrock"] { border-color: rgba(230, 126, 34, 0.2); }
+        .line-btn[data-line="hardrock"].active { border-color: #e67e22; color: #e67e22; }
+        .line-btn[data-line="metal"] { border-color: rgba(136, 136, 136, 0.2); }
+        .line-btn[data-line="metal"].active { border-color: #ccc; color: #eee; }
+        .line-btn[data-line="sinfonico"] { border-color: rgba(155, 89, 182, 0.2); }
+        .line-btn[data-line="sinfonico"].active { border-color: #9b59b6; color: #9b59b6; }
+        .line-btn[data-line="numetal"] { border-color: rgba(46, 204, 113, 0.35); }
+        .line-btn[data-line="numetal"].active { border-color: #2ecc71; color: #2ecc71; }
+        .line-btn[data-line="punk"] { border-color: rgba(231, 76, 60, 0.2); }
+        .line-btn[data-line="punk"].active { border-color: #e74c3c; color: #e74c3c; }
+        .line-btn[data-line="postpunk"] { border-color: rgba(142, 68, 173, 0.2); }
+        .line-btn[data-line="postpunk"].active { border-color: #8e44ad; color: #8e44ad; }
+        .line-btn[data-line="alternativo"] { border-color: rgba(52, 152, 219, 0.2); }
+        .line-btn[data-line="alternativo"].active { border-color: #3498db; color: #3498db; }
+        .line-btn[data-line="prog"] { border-color: rgba(231, 76, 60, 0.35); }
+        .line-btn[data-line="prog"].active { border-color: #e74c3c; color: #e74c3c; }
+        .line-btn[data-line="experimental"] { border-color: rgba(236, 240, 241, 0.1); }
+        .line-btn[data-line="experimental"].active { border-color: #ecf0f1; color: #ecf0f1; }
+        .line-btn[data-line="grunge"] { border-color: rgba(26, 188, 156, 0.25); }
+        .line-btn[data-line="grunge"].active { border-color: #1abc9c; color: #1abc9c; }
+        .line-btn[data-line="damas"] { border-color: rgba(233, 30, 99, 0.3); }
+        .line-btn[data-line="damas"].active { border-color: #e91e63; color: #e91e63; }
+        .line-btn[data-line="guitarheroes"] { border-color: rgba(241, 196, 15, 0.25); }
+        .line-btn[data-line="guitarheroes"].active { border-color: #f1c40f; color: #f1c40f; }
+        .line-btn[data-line="indie"] { border-color: rgba(52, 152, 219, 0.3); }
+        .line-btn[data-line="indie"].active { border-color: #3498db; color: #3498db; }
+        .line-btn[data-line="gotico"] { border-color: rgba(142, 68, 173, 0.3); }
+        .line-btn[data-line="gotico"].active { border-color: #8e44ad; color: #8e44ad; }
+        .line-btn[data-line="sureno"] { border-color: rgba(230, 126, 34, 0.3); }
+        .line-btn[data-line="sureno"].active { border-color: #e67e22; color: #e67e22; }
+        .line-btn[data-line="postrock"] { border-color: rgba(136, 136, 136, 0.3); }
+        .line-btn[data-line="postrock"].active { border-color: #aaa; color: #ddd; }
+
+        /* ===== GRID DE ARTISTAS ===== */
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+            min-height: 40px;
+        }
+        @media (min-width: 480px) {
+            .artists-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (min-width: 640px) {
+            .artists-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .artist-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px 6px 6px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #c8c8e0;
+            font-weight: 500;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 34px;
+            word-break: break-word;
+            line-height: 1.2;
+        }
+        .artist-chip:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 215, 0, 0.1);
+            transform: translateY(-1px);
+        }
+        .artist-chip .avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: rgba(240, 165, 0, 0.12);
+            color: #f0a500;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+        .artist-chip:active {
+            transform: scale(0.96);
+        }
+        .artist-chip.active {
+            background: rgba(240, 165, 0, 0.08);
+            border-color: #f0a500;
+            color: #f7d875;
+            box-shadow: 0 0 30px rgba(240, 165, 0, 0.04);
+        }
+        .artist-chip.active .avatar {
+            background: rgba(240, 165, 0, 0.20);
+            color: #f7d875;
+        }
+        .artist-chip .name-text {
+            flex: 1;
+            text-align: left;
+        }
+        .no-artists {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #555577;
+            font-size: 0.9rem;
+            padding: 20px 0;
+            font-weight: 300;
+        }
+
+        /* ===== TARJETA DE ARTISTA ===== */
+        .artist-detail {
+            display: none;
+            animation: fadeSlide 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            background: rgba(22, 20, 35, 0.92);
+            border-radius: 24px;
+            padding: 22px 20px 26px;
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba(255, 215, 0, 0.02);
+            margin-top: 6px;
+            position: relative;
+        }
+        .artist-detail.show {
+            display: block;
+        }
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .artist-detail .btn-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #666688;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1;
+        }
+        .artist-detail .btn-close:hover {
+            color: #f0a500;
+        }
+
+        .artist-detail .top {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px;
+            padding-right: 30px;
+        }
+        .artist-detail .name {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #f5e6c8;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+        .artist-detail .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px 8px;
+        }
+        .artist-detail .tag {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            background: rgba(240, 165, 0, 0.06);
+            border: 1px solid rgba(240, 165, 0, 0.08);
+            color: #f0c060;
+        }
+        .artist-detail .decada {
+            font-size: 0.6rem;
+            color: #7777a0;
+            letter-spacing: 0.5px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .artist-detail .body {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 4px;
+        }
+        .artist-detail .desc {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #d0d0e8;
+            font-weight: 300;
+        }
+        .artist-detail .desc strong {
+            color: #f0c060;
+            font-weight: 600;
+        }
+
+        /* ÁLBUM DESTACADO */
+        .artist-detail .album-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 14px;
+            padding: 12px 16px;
+            border-left: 3px solid #f0a500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .artist-detail .album-box .album-icon {
+            font-size: 1.2rem;
+            color: #f0a500;
+        }
+        .artist-detail .album-box .album-text {
+            font-size: 0.9rem;
+            color: #c8c8e0;
+            font-weight: 300;
+        }
+        .artist-detail .album-box .album-text strong {
+            color: #f0c060;
+            font-weight: 600;
+        }
+
+        /* RECONOCIMIENTOS */
+        .artist-detail .reconocimiento {
+            background: rgba(240, 165, 0, 0.03);
+            border-radius: 14px;
+            padding: 10px 14px;
+            border: 1px solid rgba(240, 165, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .artist-detail .reconocimiento .rec-icon {
+            font-size: 1.2rem;
+        }
+        .artist-detail .reconocimiento .rec-text {
+            font-size: 0.85rem;
+            color: #c0c0d8;
+            font-weight: 300;
+        }
+        .artist-detail .reconocimiento .rec-text strong {
+            color: #f0c060;
+            font-weight: 600;
+        }
+
+        .artist-detail .info-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 14px;
+            padding: 14px 16px 18px;
+            border-left: 3px solid #f0a500;
+        }
+        .artist-detail .info-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #f0a500;
+            margin-bottom: 8px;
+        }
+        .artist-detail .info-box ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px 10px;
+        }
+        .artist-detail .info-box ul li {
+            background: rgba(240, 165, 0, 0.03);
+            padding: 3px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #b8b8d0;
+            border: 1px solid rgba(255, 215, 0, 0.03);
+        }
+        .artist-detail .info-box ul li::before {
+            content: "✦ ";
+            color: #f0a500;
+        }
+        .artist-detail .info-text {
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #a8a8c0;
+            font-weight: 300;
+            line-height: 1.6;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .artist-detail .info-text strong {
+            color: #f0c060;
+        }
+
+        /* ===== MAPA DE METRO ===== */
+        .metro-map {
+            display: none;
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 18px;
+            padding: 14px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .metro-map.show {
+            display: block;
+        }
+        .metro-map svg {
+            width: 100%;
+            min-width: 700px;
+            height: auto;
+        }
+        .metro-map .station {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .metro-map .station:hover {
+            filter: brightness(1.4);
+        }
+        .metro-map .station-label {
+            font-size: 6px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            fill: #c0c0e0;
+            cursor: pointer;
+        }
+        .metro-map .station-label:hover {
+            fill: #f0a500;
+        }
+        .metro-map .line-label {
+            font-size: 7px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* ===== TOGGLE MAPA ===== */
+        .toggle-map {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .toggle-map button {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(240, 165, 0, 0.15);
+            background: rgba(240, 165, 0, 0.04);
+            color: #f0c060;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .toggle-map button:hover {
+            background: rgba(240, 165, 0, 0.08);
+            border-color: rgba(240, 165, 0, 0.25);
+        }
+        .toggle-map button:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== SECCIÓN DE CONTACTO Y CONTADOR ===== */
+        .contacto-section {
+            margin-top: 28px;
+            padding: 22px 20px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .contacto-section {
+                flex-direction: row;
+                align-items: stretch;
+                gap: 30px;
+            }
+            .contacto-section .chat-box {
+                flex: 2;
+            }
+            .contacto-section .contador {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: rgba(0, 0, 0, 0.15);
+                border-radius: 16px;
+                padding: 16px;
+            }
+        }
+        .contacto-section h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #f0a500;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .contacto-section .subtitulo {
+            text-align: center;
+            color: #7777a0;
+            font-size: 0.8rem;
+            margin-bottom: 16px;
+        }
+        .contacto-section .chat-box iframe {
+            width: 100%;
+            height: 450px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .contacto-section .contador {
+            text-align: center;
+        }
+        .contacto-section .contador img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .contacto-section .contador .contador-label {
+            font-size: 0.7rem;
+            color: #555577;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* ===== WELCOME ===== */
+        .welcome {
+            text-align: center;
+            padding: 18px 10px 12px;
+            color: #555577;
+        }
+        .welcome span {
+            font-size: 2.4rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .welcome h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #7777a0;
+        }
+        .welcome p {
+            font-size: 0.8rem;
+            max-width: 300px;
+            margin: 4px auto 0;
+            color: #444466;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.55rem;
+            color: #3a3a5a;
+            letter-spacing: 1.5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            padding-top: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .footer strong {
+            color: #555577;
+            font-weight: 400;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(240, 165, 0, 0.2);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>⚡ REBELDÍA SONORA</h1>
+            <span class="sub">el mapa del rock · 19 líneas · 130+ estaciones</span>
+        </div>
+
+        <div class="tagline">
+            "EL ROCK NO ES UN GÉNERO, ES UN <span>ESTADO DE REBELDÍA</span>"
+        </div>
+
+        <div class="credito">
+            ✧ curado por <strong>PEPE HUIDOBRO</strong> · cartógrafo de frecuencias · devoto del riff eterno
+        </div>
+
+        <!-- ESTADÍSTICAS -->
+        <div class="stats" id="stats">
+            <span class="stats-item"><strong id="totalArtists">0</strong> artistas</span>
+            <span class="stats-item"><strong id="totalLines">0</strong> líneas</span>
+            <span class="stats-item"><strong id="totalDecadas">0</strong> décadas</span>
+        </div>
+
+        <!-- BÚSQUEDA -->
+        <div class="search-container">
+            <input class="search-input" id="searchInput" type="text" placeholder="🔍 busca un artista..." />
+        </div>
+
+        <!-- FILTRO DÉCADA -->
+        <div class="filters" id="decadaFilters">
+            <button class="filter-btn active" data-decada="todas">Todas</button>
+            <button class="filter-btn" data-decada="60s">60s</button>
+            <button class="filter-btn" data-decada="70s">70s</button>
+            <button class="filter-btn" data-decada="80s">80s</button>
+            <button class="filter-btn" data-decada="90s">90s</button>
+            <button class="filter-btn" data-decada="00s">00s</button>
+            <button class="filter-btn" data-decada="10s">10s</button>
+        </div>
+
+        <!-- LEYENDA -->
+        <div class="leyenda" id="leyenda"></div>
+
+        <!-- TOGGLE MAPA -->
+        <div class="toggle-map">
+            <button id="toggleMetroBtn">🗺️ ver mapa de metro</button>
+        </div>
+
+        <!-- MAPA DE METRO -->
+        <div class="metro-map" id="metroMap"></div>
+
+        <!-- SELECTOR DE LÍNEAS -->
+        <div class="line-selector" id="lineSelector"></div>
+
+        <!-- GRID DE ARTISTAS -->
+        <div class="artists-grid" id="artistsGrid"></div>
+
+        <!-- TARJETA DE ARTISTA -->
+        <div class="artist-detail" id="artistDetail">
+            <button class="btn-close" id="closeDetail">✕</button>
+            <div id="detailContent"></div>
+        </div>
+
+        <div class="welcome" id="welcome">
+            <span>🎸</span>
+            <h2>selecciona una línea o busca un artista</h2>
+            <p>130+ estaciones · 19 líneas · 7 décadas</p>
+        </div>
+
+        <!-- ===== SECCIÓN DE CHAT CBOX Y CONTADOR ===== -->
+        <section class="contacto-section">
+            <div class="chat-box">
+                <h3>💬 Zona de Charla</h3>
+                <p class="subtitulo">Conecta en tiempo real con otros amantes del rock. ¡Comparte tus bandas favoritas!</p>
+                <!-- CBOX CHAT - Código proporcionado por el usuario -->
+                <iframe src="https://www3.cbox.ws/box/?boxid=3556425&boxtag=7LiW5P" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
+            </div>
+            <div class="contador">
+                <span class="contador-label">🌍 visitantes del mundo</span>
+                <a href="https://info.flagcounter.com/NYio" target="_blank" rel="noopener noreferrer">
+                    <img src="https://s01.flagcounter.com/count2/NYio/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0" />
+                </a>
+                <p style="font-size:0.6rem; color:#444466; margin-top:6px;">
+                    <a href="https://info.flagcounter.com/NYio" target="_blank" rel="noopener noreferrer" style="color:#555577; text-decoration:none;">ver estadísticas detalladas</a>
+                </p>
+            </div>
+        </section>
+
+        <div class="footer">
+            <strong>REBELDÍA SONORA</strong> · 2026 · el rock no muere, se reinventa
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        //  BASE DE DATOS — 19 LÍNEAS · 130+ ARTISTAS
+        //  Con Álbum Destacado + Reconocimiento
+        // ================================================================
+
+        const data = {
+
+            // ---- 1. CLÁSICA (VERDE) ----
+            clasica: {
+                label: 'Clásica',
+                color: '#2ecc71',
+                decada: '60s',
+                artists: [
+                    { id: 'beatles', name: 'The Beatles', decada: '60s',
+                        album: 'Sgt. Pepper\'s Lonely Hearts Club Band (1967)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1988) · 20 #1 en Billboard',
+                        desc: 'La banda más influyente de la historia. Revolucionaron la música popular con su creatividad, experimentación en estudio y una evolución constante.',
+                        influence: 'Influyeron en prácticamente todos los géneros del rock.',
+                        influenced: ['Pink Floyd', 'Radiohead', 'Nirvana', 'Oasis', 'Arctic Monkeys'] },
+                    { id: 'rollingstones', name: 'The Rolling Stones', decada: '60s',
+                        album: 'Exile on Main St. (1972)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1989) · Gira más longeva de la historia',
+                        desc: 'La banda más longeva y rebelde del rock. Con su sonido basado en el blues y una actitud de "chicos malos", definieron el rock de estadio.',
+                        influence: 'Influyeron en el hard rock, el punk y el rock alternativo.',
+                        influenced: ['Aerosmith', 'Guns N\' Roses', 'The Black Keys', 'Oasis'] },
+                    { id: 'thedoors', name: 'The Doors', decada: '60s',
+                        album: 'The Doors (1967)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1993) · 100 Greatest Artists (Rolling Stone)',
+                        desc: 'El rock psicodélico con alma de poeta. Con Jim Morrison al frente, su música mezcla blues, jazz y rock con letras oscuras y místicas.',
+                        influence: 'Influyeron en el rock alternativo, el gótico y el grunge.',
+                        influenced: ['Nirvana', 'Pearl Jam', 'The Cult', 'Alice in Chains'] },
+                    { id: 'creedence', name: 'Creedence Clearwater Revival', decada: '60s',
+                        album: 'Chronicle: The 20 Greatest Hits (1976)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1993) · 5 álbumes en Top 10 en un año',
+                        desc: 'El rock sureño y el swamp rock en su máxima expresión. Con su sonido crudo y la voz de John Fogerty, crearon himnos de libertad.',
+                        influence: 'Influyeron en el rock sureño, el country rock y el rock alternativo.',
+                        influenced: ['Lynyrd Skynyrd', 'The Black Keys', 'Foo Fighters', 'Pearl Jam'] },
+                    { id: 'eagles', name: 'The Eagles', decada: '70s',
+                        album: 'Hotel California (1976)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1998) · 6 #1 álbumes · 100M discos vendidos',
+                        desc: 'El rock americano por excelencia. Con su mezcla de rock, country y folk, crearon himnos eternos como "Hotel California".',
+                        influence: 'Influyeron en el country rock, el rock alternativo y el pop rock.',
+                        influenced: ['Tom Petty', 'Jackson Browne', 'Fleet Foxes', 'The Killers'] },
+                    { id: 'eltonjohn', name: 'Elton John', decada: '70s',
+                        album: 'Goodbye Yellow Brick Road (1973)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1994) · 5 Grammy · 300M discos vendidos',
+                        desc: 'El pianista más icónico del rock. Con su música que mezcla pop, rock y glam, es uno de los artistas más exitosos y queridos.',
+                        influence: 'Influyó en el pop rock, el glam y el rock alternativo.',
+                        influenced: ['Lady Gaga', 'Billy Joel', 'Mika', 'Queen'] },
+                    { id: 'tompetty', name: 'Tom Petty & The Heartbreakers', decada: '70s',
+                        album: 'Damn the Torpedoes (1979)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2002) · 50M discos vendidos',
+                        desc: 'El rock americano con alma de corazón. Con su sonido clásico y una actitud de "everyman", se convirtió en uno de los artistas más queridos.',
+                        influence: 'Influyó en el rock alternativo, el americana y el indie rock.',
+                        influenced: ['The Strokes', 'Wilco', 'My Morning Jacket', 'Kings of Leon'] },
+                    { id: 'thewho', name: 'The Who', decada: '60s',
+                        album: 'Who\'s Next (1971)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1990) · Premio Grammy a la Trayectoria',
+                        desc: 'Pioneros del rock de estadio y la ópera rock. Con su energía demoledora y la batería de Keith Moon, llevaron el hard rock a otro nivel.',
+                        influence: 'Influyeron en el punk, el hard rock y el rock alternativo.',
+                        influenced: ['The Clash', 'Pearl Jam', 'Green Day', 'Rush'] },
+                    { id: 'thekinks', name: 'The Kinks', decada: '60s',
+                        album: 'The Kinks Are the Village Green Preservation Society (1968)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1990) · Influyeron en el britpop',
+                        desc: 'Una de las bandas más influyentes de la invasión británica. Con su sonido basado en la guitarra y sus letras críticas, definieron el rock de los 60.',
+                        influence: 'Influyeron en el punk, el indie y el rock alternativo.',
+                        influenced: ['The Clash', 'The Strokes', 'Oasis', 'Arctic Monkeys'] },
+                    { id: 'theanimals', name: 'The Animals', decada: '60s',
+                        album: 'The Animals (1964)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1994)',
+                        desc: 'El blues rock británico más crudo. Con la voz de Eric Burdon, crearon himnos como "House of the Rising Sun".',
+                        influence: 'Influyeron en el blues rock y el rock alternativo.',
+                        influenced: ['Led Zeppelin', 'The Doors', 'The White Stripes', 'Jack White'] },
+                    { id: 'creamband', name: 'Cream', decada: '60s',
+                        album: 'Disraeli Gears (1967)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1993) · Primer supergrupo del rock',
+                        desc: 'El power trío más influyente del blues rock. Con Eric Clapton, Jack Bruce y Ginger Baker, crearon un sonido único.',
+                        influence: 'Influyeron en el hard rock, el prog y el metal.',
+                        influenced: ['Led Zeppelin', 'Rush', 'Tool', 'The Black Keys'] },
+                    { id: 'jimihendrix', name: 'The Jimi Hendrix Experience', decada: '60s',
+                        album: 'Are You Experienced? (1967)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1992) · #1 Guitarrista de todos los tiempos (Rolling Stone)',
+                        desc: 'El guitarrista más influyente de la historia. Revolucionó la guitarra eléctrica con su técnica, su sonido y su carisma.',
+                        influence: 'Influyó en el rock, el blues y el metal. Guitarristas como Stevie Ray Vaughan, Eddie Van Halen y John Frusciante le deben todo.',
+                        influenced: ['Stevie Ray Vaughan', 'Eddie Van Halen', 'John Frusciante', 'Joe Satriani'] }
+                ]
+            },
+
+            // ---- 2. BLUES ROCK (TURQUESA) ----
+            blues: {
+                label: 'Blues Rock',
+                color: '#1abc9c',
+                decada: '70s',
+                artists: [
+                    { id: 'srv', name: 'Stevie Ray Vaughan', decada: '80s',
+                        album: 'Texas Flood (1983)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2015) · 6 Grammy · Revivió el blues en los 80',
+                        desc: 'El guitarrista que revivió el blues en los 80. Con su técnica impecable y su pasión por el blues, es uno de los guitarristas más influyentes.',
+                        influence: 'Influyó en el blues rock, el rock alternativo y el metal.',
+                        influenced: ['John Mayer', 'Kenny Wayne Shepherd', 'Joe Bonamassa', 'Gary Clark Jr.'] },
+                    { id: 'albertking', name: 'Albert King', decada: '60s',
+                        album: 'Born Under a Bad Sign (1967)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2013) · Uno de los "Tres Reyes del Blues"',
+                        desc: 'El rey del blues eléctrico. Con su guitarra "Flying V" y su técnica única de "bending", es uno de los tres reyes del blues.',
+                        influence: 'Influyó en el blues rock y el rock en general.',
+                        influenced: ['Eric Clapton', 'Jimi Hendrix', 'Stevie Ray Vaughan', 'Gary Clark Jr.'] },
+                    { id: 'santana', name: 'Carlos Santana', decada: '70s',
+                        album: 'Abraxas (1970)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1998) · 10 Grammy · 100M discos vendidos',
+                        desc: 'El guitarrista que fusionó el rock con la música latina. Su sonido único lo convirtió en uno de los guitarristas más reconocibles.',
+                        influence: 'Influyó en el rock latino, el jazz fusion y el rock alternativo.',
+                        influenced: ['Los Lonely Boys', 'Maná', 'Ozomatli', 'Rodrigo y Gabriela'] },
+                    { id: 'zztop', name: 'ZZ Top', decada: '70s',
+                        album: 'Eliminator (1983)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2004) · 50M discos vendidos',
+                        desc: 'El blues rock más sucio y divertido. Con sus barbas y su sonido basado en el blues, mantuvieron vivo el espíritu del blues rock.',
+                        influence: 'Influyeron en el hard rock, el rock alternativo y el metal.',
+                        influenced: ['Queens of the Stone Age', 'The Black Keys', 'Royal Blood', 'Jack White'] }
+                ]
+            },
+
+            // ---- 3. GLAM / ART ROCK (ROSA) ----
+            glam: {
+                label: 'Glam / Art Rock',
+                color: '#e91e63',
+                decada: '70s',
+                artists: [
+                    { id: 'davidbowie', name: 'David Bowie', decada: '70s',
+                        album: 'The Rise and Fall of Ziggy Stardust and the Spiders from Mars (1972)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1996) · 5 Grammy · 140M discos vendidos',
+                        desc: 'El camaleón del rock. Con sus múltiples personajes y su capacidad para reinventarse, es uno de los artistas más influyentes del siglo XX.',
+                        influence: 'Influyó en el glam, el punk, el rock alternativo y el pop.',
+                        influenced: ['Lady Gaga', 'Trent Reznor', 'The Strokes', 'Arcade Fire', 'Muse'] },
+                    { id: 'queen', name: 'Queen', decada: '70s',
+                        album: 'A Night at the Opera (1975)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2001) · 5 Grammy · 300M discos vendidos',
+                        desc: 'La banda más teatral y grandiosa del rock. Con Freddie Mercury al frente, fusionaron hard rock, ópera, glam y pop en un sonido único.',
+                        influence: 'Influyeron en el rock alternativo, el metal sinfónico y el pop.',
+                        influenced: ['Muse', 'Radiohead', 'My Chemical Romance', 'Panic! At The Disco'] },
+                    { id: 'petergabriel', name: 'Peter Gabriel', decada: '70s',
+                        album: 'So (1986)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2010) · 6 Grammy · Premio Polar Music',
+                        desc: 'El artista más innovador del rock. Después de dejar Genesis, creó una carrera solista llena de experimentación, música mundial y tecnología.',
+                        influence: 'Influyó en el art rock, el rock alternativo y la música mundial.',
+                        influenced: ['Radiohead', 'Arcade Fire', 'Sting', 'Tame Impala'] }
+                ]
+            },
+
+            // ---- 4. HARD ROCK (NARANJA) ----
+            hardrock: {
+                label: 'Hard Rock',
+                color: '#e67e22',
+                decada: '70s',
+                artists: [
+                    { id: 'acdc', name: 'AC/DC', decada: '70s',
+                        album: 'Back in Black (1980)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2003) · 200M discos vendidos · 2º álbum más vendido de la historia',
+                        desc: 'El hard rock en su estado más puro. Riffs simples pero demoledores, una energía inagotable y la voz rasposa de Brian Johnson (y Bon Scott).',
+                        influence: 'Influyeron en el hard rock, el metal y el rock de estadio.',
+                        influenced: ['Guns N\' Roses', 'Metallica', 'Foo Fighters', 'Airbourne'] },
+                    { id: 'ledzeppelin', name: 'Led Zeppelin', decada: '70s',
+                        album: 'Led Zeppelin IV (1971)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1995) · 300M discos vendidos · "Stairway to Heaven" himno eterno',
+                        desc: 'Reinventaron el blues eléctrico llevándolo a dimensiones épicas. Con Robert Plant, Jimmy Page y John Bonham, crearon himnos eternos.',
+                        influence: 'Sentaron las bases del hard rock y el heavy metal.',
+                        influenced: ['Aerosmith', 'Guns N\' Roses', 'Soundgarden', 'Foo Fighters'] },
+                    { id: 'deeppurple', name: 'Deep Purple', decada: '70s',
+                        album: 'Machine Head (1972)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2016) · 100M discos vendidos',
+                        desc: 'El tercer pilar del hard rock y el heavy metal. Su sonido fusiona blues, rock y música clásica con un órgano Hammond monumental.',
+                        influence: 'Influyeron en el metal, el prog y el hard rock.',
+                        influenced: ['Metallica', 'Dream Theater', 'Rainbow', 'Whitesnake'] },
+                    { id: 'scorpions', name: 'Scorpions', decada: '70s',
+                        album: 'Love at First Sting (1984)',
+                        reconocimiento: '🏆 Premio a la Trayectoria (EMA 2009) · 100M discos vendidos',
+                        desc: 'El hard rock alemán que conquistó el mundo. Creadores de himnos como "Wind of Change", son una de las bandas más exitosas de Europa.',
+                        influence: 'Influyeron en el hard rock, el metal y el rock alternativo.',
+                        influenced: ['Helloween', 'Accept', 'Rammstein', 'Metallica'] },
+                    { id: 'statusquo', name: 'Status Quo', decada: '70s',
+                        album: 'Piledriver (1972)',
+                        reconocimiento: '🏆 Brit Award a la Trayectoria (1991) · Más de 60 éxitos en UK',
+                        desc: 'El boogie rock por excelencia. Con su sonido basado en el blues y el rock & roll, mantuvieron vivo el espíritu del rock en el Reino Unido.',
+                        influence: 'Influyeron en el hard rock, el punk y el rock alternativo.',
+                        influenced: ['The Ramones', 'The Clash', 'Oasis', 'Foo Fighters'] },
+                    { id: 'deefleppard', name: 'Def Leppard', decada: '80s',
+                        album: 'Hysteria (1987)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2019) · 100M discos vendidos',
+                        desc: 'El hard rock británico con un toque pop. Con sus armonías vocales y guitarras gemelas, son una de las bandas más exitosas de los 80.',
+                        influence: 'Influyeron en el rock alternativo, el pop rock y el glam metal.',
+                        influenced: ['Bon Jovi', 'Poison', 'Nickelback', 'Foo Fighters'] }
+                ]
+            },
+
+            // ---- 5. METAL (GRIS) ----
+            metal: {
+                label: 'Metal',
+                color: '#aaa',
+                decada: '70s',
+                artists: [
+                    { id: 'blacksabbath', name: 'Black Sabbath', decada: '70s',
+                        album: 'Paranoid (1970)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2006) · Grammy a la Trayectoria · Padres del heavy metal',
+                        desc: 'Los padres del heavy metal. Con sus acordes de tritono y letras oscuras, crearon el sonido pesado que definiría un género entero.',
+                        influence: 'Todo el metal posterior les debe su existencia.',
+                        influenced: ['Metallica', 'Slayer', 'Pantera', 'Korn', 'Sleep'] },
+                    { id: 'judaspriest', name: 'Judas Priest', decada: '70s',
+                        album: 'British Steel (1980)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2022) · Grammy a la Trayectoria',
+                        desc: 'Los dioses del heavy metal clásico. Con su estética de cuero, guitarras gemelas y la voz operística de Rob Halford, definieron el sonido del metal.',
+                        influence: 'Influyeron en el power metal, el speed metal y el thrash.',
+                        influenced: ['Iron Maiden', 'Metallica', 'Slayer', 'Helloween', 'Megadeth'] },
+                    { id: 'ironmaiden', name: 'Iron Maiden', decada: '80s',
+                        album: 'The Number of the Beast (1982)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2025) · 100M discos vendidos · 5 álbumes #1 en UK',
+                        desc: 'El metal clásico en su máxima expresión. Guitarras gemelas, voces operísticas, letras de historia y ciencia ficción.',
+                        influence: 'Influyeron en el power metal, el death metal y el metal progresivo.',
+                        influenced: ['Dream Theater', 'Slayer', 'Metallica', 'Trivium'] },
+                    { id: 'metallica', name: 'Metallica', decada: '80s',
+                        album: 'Master of Puppets (1986)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2009) · 9 Grammy · 125M discos vendidos',
+                        desc: 'Los reyes del thrash metal y el metal de estadio. Llevaron el metal underground al mainstream sin perder su esencia.',
+                        influence: 'Influyeron en el nu metal, el metal progresivo y el metal alternativo.',
+                        influenced: ['Linkin Park', 'System of a Down', 'Avenged Sevenfold', 'Machine Head'] },
+                    { id: 'slayer', name: 'Slayer', decada: '80s',
+                        album: 'Reign in Blood (1986)',
+                        reconocimiento: '🏆 5 Grammy · Considerados los padres del thrash extremo',
+                        desc: 'El thrash metal más extremo. Velocidad, distorsión, letras oscuras y una actitud feroz.',
+                        influence: 'Influyeron en el death metal, el black metal y el metal extremo.',
+                        influenced: ['Behemoth', 'Lamb of God', 'Gojira', 'Meshuggah'] },
+                    { id: 'dio', name: 'Dio', decada: '80s',
+                        album: 'Holy Diver (1983)',
+                        reconocimiento: '🏆 Premio a la Trayectoria (Metal Hammer) · Creador del gesto de los cuernos',
+                        desc: 'La voz más poderosa del metal. Ronnie James Dio es uno de los vocalistas más influyentes, conocido por su voz operística y el gesto de los cuernos.',
+                        influence: 'Influyó en el power metal, el heavy metal y el metal sinfónico.',
+                        influenced: ['Bruce Dickinson', 'Rob Halford', 'Jorn Lande', 'Tony Martin'] },
+                    { id: 'tooll', name: 'Tool', decada: '90s',
+                        album: 'Lateralus (2001)',
+                        reconocimiento: '🏆 3 Grammy · Álbum #1 en Billboard · Considerados los reyes del metal progresivo',
+                        desc: 'Metal progresivo, experimental y psicodélico. Ritmos complejos, atmósferas densas y letras filosóficas.',
+                        influence: 'Influyeron en el metal alternativo, el post-metal y el rock progresivo.',
+                        influenced: ['A Perfect Circle', 'Deftones', 'Karnivool', 'TesseracT'] }
+                ]
+            },
+
+            // ---- 6. METAL SINFÓNICO (PÚRPURA) ----
+            sinfonico: {
+                label: 'Metal Sinfónico',
+                color: '#9b59b6',
+                decada: '90s',
+                artists: [
+                    { id: 'epica', name: 'Epica', decada: '00s',
+                        album: 'The Quantum Enigma (2014)',
+                        reconocimiento: '🏆 Considerada la mejor banda de metal sinfónico moderna · Colaboraciones con orquestas',
+                        desc: 'El metal sinfónico más grandioso. Con su mezcla de metal, orquesta y coros, han llevado el género a un nivel de complejidad y belleza sin igual.',
+                        influence: 'Influyeron en el metal sinfónico y el metal progresivo.',
+                        influenced: ['Nightwish', 'Within Temptation', 'Xandria', 'Kamelot'] },
+                    { id: 'therion', name: 'Therion', decada: '90s',
+                        album: 'Theli (1996)',
+                        reconocimiento: '🏆 Considerados los padres del metal sinfónico moderno · 20 álbumes de estudio',
+                        desc: 'Los padres del metal sinfónico. Con su fusión de metal, ópera y música clásica, crearon un género que ha influenciado a bandas de todo el mundo.',
+                        influence: 'Influyeron en el metal sinfónico, el metal gótico y el metal progresivo.',
+                        influenced: ['Nightwish', 'Epica', 'Within Temptation', 'Kamelot'] },
+                    { id: 'nightwish', name: 'Nightwish', decada: '90s',
+                        album: 'Once (2004)',
+                        reconocimiento: '🏆 10 álbumes #1 en Finlandia · 10M discos vendidos · Banda más exitosa de Finlandia',
+                        desc: 'El metal sinfónico más épico y exitoso. Con su mezcla de metal, orquesta y la voz operística de Tarja Turunen (y luego Floor Jansen).',
+                        influence: 'Influyeron en el metal sinfónico, el power metal y el rock alternativo.',
+                        influenced: ['Epica', 'Within Temptation', 'Xandria', 'Kamelot'] },
+                    { id: 'withintemptation', name: 'Within Temptation', decada: '90s',
+                        album: 'The Heart of Everything (2007)',
+                        reconocimiento: '🏆 5 álbumes #1 en Países Bajos · Colaboración con orquestas',
+                        desc: 'El metal sinfónico con alma gótica. Con su sonido melódico y la voz de Sharon den Adel, son una de las bandas más exitosas del género.',
+                        influence: 'Influyeron en el metal sinfónico, el rock alternativo y el pop rock.',
+                        influenced: ['Epica', 'Xandria', 'Delain', 'Nightwish'] },
+                    { id: 'kamelot', name: 'Kamelot', decada: '90s',
+                        album: 'The Black Halo (2005)',
+                        reconocimiento: '🏆 Considerados los reyes del power metal sinfónico · 5 álbumes en Top 10 mundial',
+                        desc: 'El power metal sinfónico por excelencia. Con su sonido épico y la voz de Roy Khan, son una de las bandas más influyentes del power metal sinfónico.',
+                        influence: 'Influyeron en el power metal, el metal sinfónico y el prog metal.',
+                        influenced: ['Epica', 'Nightwish', 'Dream Theater', 'Symphony X'] }
+                ]
+            },
+
+            // ---- 7. NU METAL (VERDE NEÓN) ----
+            numetal: {
+                label: 'Nu Metal',
+                color: '#2ecc71',
+                decada: '90s',
+                artists: [
+                    { id: 'korn', name: 'Korn', decada: '90s',
+                        album: 'Korn (1994)',
+                        reconocimiento: '🏆 2 Grammy · 40M discos vendidos · Padres del nu metal',
+                        desc: 'Los padres del nu metal. Con su sonido pesado, guitarras en 7 cuerdas y la voz de Jonathan Davis, revolucionaron el metal en los 90.',
+                        influence: 'Influyeron en el nu metal, el metal alternativo y el rock moderno.',
+                        influenced: ['Limp Bizkit', 'Slipknot', 'Linkin Park', 'System of a Down'] },
+                    { id: 'deftones', name: 'Deftones', decada: '90s',
+                        album: 'White Pony (2000)',
+                        reconocimiento: '🏆 Grammy · Considerados los más innovadores del nu metal',
+                        desc: 'El nu metal más experimental y atmosférico. Su mezcla de metal, shoegaze y rock alternativo los hace únicos.',
+                        influence: 'Influyeron en el metal alternativo, el shoegaze y el post-metal.',
+                        influenced: ['Tool', 'A Perfect Circle', 'Karnivool', 'TesseracT'] },
+                    { id: 'linkinpark', name: 'Linkin Park', decada: '00s',
+                        album: 'Hybrid Theory (2000)',
+                        reconocimiento: '🏆 2 Grammy · 100M discos vendidos · Álbum debut más vendido del siglo XXI',
+                        desc: 'El nu metal más exitoso y emocional. Con su mezcla de metal, rap y electrónica, crearon himnos que conectaron con toda una generación.',
+                        influence: 'Influyeron en el nu metal, el rock alternativo y el pop rock.',
+                        influenced: ['Bring Me The Horizon', 'Starset', 'I Prevail', 'Three Days Grace'] },
+                    { id: 'systemofadown', name: 'System of a Down', decada: '90s',
+                        album: 'Toxicity (2001)',
+                        reconocimiento: '🏆 Grammy · 3 álbumes #1 en Billboard · 40M discos vendidos',
+                        desc: 'El nu metal más político y excéntrico. Con su mezcla de metal, rock alternativo y música armenia, son una de las bandas más originales.',
+                        influence: 'Influyeron en el metal alternativo, el rock progresivo y la música experimental.',
+                        influenced: ['Avenged Sevenfold', 'Slipknot', 'Korn', 'Linkin Park'] },
+                    { id: 'slipknot', name: 'Slipknot', decada: '90s',
+                        album: 'Slipknot (1999)',
+                        reconocimiento: '🏆 Grammy · 9 miembros · Mascotas y estética icónica · 30M discos vendidos',
+                        desc: 'El metal más extremo y teatral. Con nueve miembros, máscaras y un sonido demoledor, son una de las bandas más impactantes del metal moderno.',
+                        influence: 'Influyeron en el metal alternativo, el nu metal y el metal extremo.',
+                        influenced: ['Mudvayne', 'Stone Sour', 'Five Finger Death Punch', 'Avenged Sevenfold'] }
+                ]
+            },
+
+            // ---- 8. PUNK (ROJO) ----
+            punk: {
+                label: 'Punk',
+                color: '#e74c3c',
+                decada: '70s',
+                artists: [
+                    { id: 'ramones', name: 'The Ramones', decada: '70s',
+                        album: 'Ramones (1976)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2002) · Grammy a la Trayectoria · Padres del punk',
+                        desc: 'Los padres del punk rock. Ritmo rápido, guitarras distorsionadas, canciones cortas y una actitud de "menos es más".',
+                        influence: 'Influyeron en el punk, el pop punk y el rock alternativo.',
+                        influenced: ['Green Day', 'Blink-182', 'Nirvana', 'The Clash'] },
+                    { id: 'clash', name: 'The Clash', decada: '70s',
+                        album: 'London Calling (1979)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2003) · Mejor álbum de los 80 (Rolling Stone)',
+                        desc: 'No solo hicieron punk, lo convirtieron en un manifiesto político. Con ritmos urgentes y una actitud de cambio social.',
+                        influence: 'El punk abrió la puerta al rock alternativo, al indie y al grunge.',
+                        influenced: ['Nirvana', 'Green Day', 'Rage Against The Machine', 'The Strokes'] },
+                    { id: 'sexpistols', name: 'Sex Pistols', decada: '70s',
+                        album: 'Never Mind the Bollocks, Here\'s the Sex Pistols (1977)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2006) · Un único álbum que cambió la historia',
+                        desc: 'La banda más provocadora del punk. Su caos y su estética marcaron una generación y convirtieron al punk en un fenómeno global.',
+                        influence: 'Inspiraron a bandas post-punk, grunge y hardcore.',
+                        influenced: ['Joy Division', 'Nirvana', 'Bad Religion', 'Black Flag'] },
+                    { id: 'blackflag', name: 'Black Flag', decada: '80s',
+                        album: 'Damaged (1981)',
+                        reconocimiento: '🏆 Considerados los padres del hardcore punk · Influencia en el metal alternativo',
+                        desc: 'El punk se vuelve más agresivo y experimental. Con Henry Rollins en la voz, llevaron el hardcore a su extremo.',
+                        influence: 'Influyeron en el hardcore, el metal alternativo y el post-hardcore.',
+                        influenced: ['Fugazi', 'Nirvana', 'Tool', 'Deftones'] },
+                    { id: 'deadkennedys', name: 'Dead Kennedys', decada: '80s',
+                        album: 'Fresh Fruit for Rotting Vegetables (1980)',
+                        reconocimiento: '🏆 Considerados los reyes del punk satírico · Influencia en el rock alternativo',
+                        desc: 'El punk más satírico y político. Con Jello Biafra en la voz, crearon himnos de protesta que siguen vigentes.',
+                        influence: 'Influyeron en el hardcore, el punk y el rock alternativo.',
+                        influenced: ['Green Day', 'Rage Against The Machine', 'The Offspring', 'Bad Religion'] },
+                    { id: 'badreligion', name: 'Bad Religion', decada: '80s',
+                        album: 'Suffer (1988)',
+                        reconocimiento: '🏆 Considerados los reyes del punk melódico · 40 años de carrera',
+                        desc: 'El punk con letras inteligentes y armonías vocales. Son una de las bandas más longevas del punk.',
+                        influence: 'Influyeron en el punk, el pop punk y el rock alternativo.',
+                        influenced: ['Green Day', 'The Offspring', 'Sum 41', 'Rise Against'] },
+                    { id: 'misfits', name: 'The Misfits', decada: '80s',
+                        album: 'Walk Among Us (1982)',
+                        reconocimiento: '🏆 Considerados los padres del horror punk · Estética icónica',
+                        desc: 'El punk con temática de terror. Con su estética de horror y su sonido pegadizo, son una de las bandas más influyentes del punk underground.',
+                        influence: 'Influyeron en el horror punk, el pop punk y el metal alternativo.',
+                        influenced: ['Green Day', 'My Chemical Romance', 'AFI', 'The Offspring'] }
+                ]
+            },
+
+            // ---- 9. POST-PUNK / NEW WAVE (VIOLETA) ----
+            postpunk: {
+                label: 'Post-Punk / New Wave',
+                color: '#8e44ad',
+                decada: '80s',
+                artists: [
+                    { id: 'joydivision', name: 'Joy Division', decada: '70s',
+                        album: 'Unknown Pleasures (1979)',
+                        reconocimiento: '🏆 Considerados la banda más influyente del post-punk · Portada icónica',
+                        desc: 'El post-punk más oscuro y existencial. Con su sonido minimalista y la voz de Ian Curtis, definieron el post-punk.',
+                        influence: 'Influyeron en el rock gótico, el indie y el rock alternativo.',
+                        influenced: ['The Cure', 'Interpol', 'Editors', 'White Lies'] },
+                    { id: 'neworder', name: 'New Order', decada: '80s',
+                        album: 'Power, Corruption & Lies (1983)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2023) · Pioneros del synth-pop y el house',
+                        desc: 'La evolución del post-punk hacia la electrónica. Mezclaron rock, synth-pop y dance, revolucionando la música de los 80.',
+                        influence: 'Influyeron en el synth-pop, el house y el rock alternativo.',
+                        influenced: ['Depeche Mode', 'Pet Shop Boys', 'The Killers', 'LCD Soundsystem'] },
+                    { id: 'thesmiths', name: 'The Smiths', decada: '80s',
+                        album: 'The Queen Is Dead (1986)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2024) · Considerados los padres del indie rock',
+                        desc: 'El indie rock más melódico y melancólico. Con la voz de Morrissey y las guitarras de Johnny Marr, crearon himnos para los que se sentían diferentes.',
+                        influence: 'Influyeron en el indie rock, el britpop y el rock alternativo.',
+                        influenced: ['Oasis', 'The Strokes', 'Arctic Monkeys', 'The Killers'] },
+                    { id: 'talkingheads', name: 'Talking Heads', decada: '80s',
+                        album: 'Remain in Light (1980)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2002) · 5 álbumes en Top 10',
+                        desc: 'El art rock más divertido y experimental. Mezclaron rock, funk, world music y arte conceptual.',
+                        influence: 'Influyeron en el rock alternativo, el indie y la música experimental.',
+                        influenced: ['Radiohead', 'Arcade Fire', 'LCD Soundsystem', 'Beck'] },
+                    { id: 'depechemode', name: 'Depeche Mode', decada: '80s',
+                        album: 'Violator (1990)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2020) · 100M discos vendidos · Pioneros del synth-pop',
+                        desc: 'El synth-pop más oscuro y profundo. Con su mezcla de electrónica, rock y letras existenciales, son una de las bandas más influyentes.',
+                        influence: 'Influyeron en el synth-pop, el rock alternativo y la música electrónica.',
+                        influenced: ['The Killers', 'Nine Inch Nails', 'Muse', 'The Strokes'] },
+                    { id: 'inxs', name: 'INXS', decada: '80s',
+                        album: 'Kick (1987)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2024) · 60M discos vendidos',
+                        desc: 'El rock dance por excelencia. Con su mezcla de rock, funk y dance, fueron una de las bandas más exitosas de los 80 y 90.',
+                        influence: 'Influyeron en el rock alternativo, el indie y el pop rock.',
+                        influenced: ['The Killers', 'Maroon 5', 'Imagine Dragons', 'Kings of Leon'] },
+                    { id: 'thecure', name: 'The Cure', decada: '80s',
+                        album: 'Disintegration (1989)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2019) · 30M discos vendidos',
+                        desc: 'El rock gótico por excelencia. Con Robert Smith al frente, su sonido mezcla post-punk, pop y atmósferas oscuras.',
+                        influence: 'Influyeron en el rock gótico, el indie y el rock alternativo.',
+                        influenced: ['The Smiths', 'Radiohead', 'Interpol', 'The Strokes'] },
+                    { id: 'siouxsie', name: 'Siouxsie and the Banshees', decada: '80s',
+                        album: 'Juju (1981)',
+                        reconocimiento: '🏆 Considerados los reyes del post-punk gótico · Influencia en el rock alternativo',
+                        desc: 'El post-punk más oscuro y teatral. Con Siouxsie Sioux en la voz, crearon un sonido que influenció a bandas góticas y alternativas.',
+                        influence: 'Influyeron en el rock gótico, el post-punk y el indie.',
+                        influenced: ['The Cure', 'Joy Division', 'The Smiths', 'Nirvana'] }
+                ]
+            },
+
+            // ---- 10. ALTERNATIVO / INDIE (AZUL) ----
+            alternativo: {
+                label: 'Alternativo / Indie',
+                color: '#3498db',
+                decada: '90s',
+                artists: [
+                    { id: 'radiohead', name: 'Radiohead', decada: '90s',
+                        album: 'OK Computer (1997)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2019) · 5 Grammy · Considerado el mejor álbum de los 90',
+                        desc: 'La banda más inclasificable del rock moderno. Han pasado del rock alternativo al art rock, la electrónica y la música clásica.',
+                        influence: 'Influyeron en el indie rock, el art pop y el rock experimental.',
+                        influenced: ['Coldplay', 'Muse', 'Arcade Fire', 'Tame Impala'] },
+                    { id: 'muse', name: 'Muse', decada: '00s',
+                        album: 'Absolution (2003)',
+                        reconocimiento: '🏆 2 Grammy · 20M discos vendidos · 6 álbumes #1 en UK',
+                        desc: 'Rock alternativo con influencias de prog, metal y música clásica. Canciones épicas, voces desgarradas y sintetizadores.',
+                        influence: 'Influyeron en el rock moderno con su mezcla de géneros.',
+                        influenced: ['Nothing But Thieves', 'Royal Blood', 'Highly Suspect'] },
+                    { id: 'coldplay', name: 'Coldplay', decada: '00s',
+                        album: 'A Rush of Blood to the Head (2002)',
+                        reconocimiento: '🏆 7 Grammy · 100M discos vendidos · 9 álbumes #1 en UK',
+                        desc: 'El rock alternativo más melódico y emocional. Con su sonido basado en el piano y las guitarras, son una de las bandas más exitosas del siglo XXI.',
+                        influence: 'Influyeron en el indie rock, el pop rock y el rock alternativo.',
+                        influenced: ['Keane', 'The Fray', 'OneRepublic', 'Imagine Dragons'] },
+                    { id: 'u2', name: 'U2', decada: '80s',
+                        album: 'The Joshua Tree (1987)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2005) · 22 Grammy · 170M discos vendidos',
+                        desc: 'El rock de estadio por excelencia. Con su sonido basado en la guitarra de The Edge y la voz de Bono, son una de las bandas más exitosas de la historia.',
+                        influence: 'Influyeron en el rock alternativo, el indie y el pop rock.',
+                        influenced: ['Coldplay', 'Kings of Leon', 'Imagine Dragons', 'The Killers'] },
+                    { id: 'arctics', name: 'Arctic Monkeys', decada: '00s',
+                        album: 'Whatever People Say I Am, That\'s What I\'m Not (2006)',
+                        reconocimiento: '🏆 7 Brit Awards · 5 álbumes #1 en UK · Considerados los reyes del indie moderno',
+                        desc: 'El indie rock británico más exitoso del siglo XXI. Con su sonido basado en la guitarra y la voz de Alex Turner.',
+                        influence: 'Influyeron en el indie rock, el garage rock y el rock alternativo.',
+                        influenced: ['The Strokes', 'Franz Ferdinand', 'The Killers', 'The Wombats'] },
+                    { id: 'franzferdinand', name: 'Franz Ferdinand', decada: '00s',
+                        album: 'Franz Ferdinand (2004)',
+                        reconocimiento: '🏆 Brit Award · 4 álbumes #1 en UK',
+                        desc: 'El garage rock más bailable. Con su mezcla de rock, punk y dance, fueron una de las bandas más importantes del revival del garage rock.',
+                        influence: 'Influyeron en el indie rock, el garage rock y el rock alternativo.',
+                        influenced: ['Arctic Monkeys', 'The Strokes', 'The Kooks', 'The Wombats'] },
+                    { id: 'pixies', name: 'Pixies', decada: '80s',
+                        album: 'Doolittle (1989)',
+                        reconocimiento: '🏆 Considerados los padres del rock alternativo · Influencia en Nirvana',
+                        desc: 'El puente entre el punk y el rock alternativo de los 90. Canciones con dinámicas de "quiet-loud-quiet".',
+                        influence: 'Influyeron en Nirvana, Pearl Jam, Radiohead y toda la escena alternativa.',
+                        influenced: ['Nirvana', 'Pearl Jam', 'Radiohead', 'The Strokes'] },
+                    { id: 'rem', name: 'R.E.M.', decada: '80s',
+                        album: 'Automatic for the People (1992)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2007) · 3 Grammy · 90M discos vendidos',
+                        desc: 'Los reyes del college rock. Llevaron el rock alternativo al mainstream sin perder su esencia.',
+                        influence: 'Influyeron en bandas como Radiohead, Coldplay, The Smiths y todo el indie rock.',
+                        influenced: ['Radiohead', 'Coldplay', 'The Smiths', 'The Strokes'] },
+                    { id: 'redhot', name: 'Red Hot Chili Peppers', decada: '80s',
+                        album: 'Californication (1999)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2012) · 6 Grammy · 120M discos vendidos',
+                        desc: 'El funk rock más exitoso. Con su mezcla de rock, funk y hip-hop, son una de las bandas más influyentes del rock alternativo.',
+                        influence: 'Influyeron en el funk rock, el rock alternativo y el pop rock.',
+                        influenced: ['Incubus', '311', 'Rage Against The Machine', 'Kings of Leon'] },
+                    { id: 'oasis', name: 'Oasis', decada: '90s',
+                        album: '(What\'s the Story) Morning Glory? (1995)',
+                        reconocimiento: '🏆 9 Brit Awards · 75M discos vendidos · Considerados los reyes del britpop',
+                        desc: 'El britpop más grandioso. Con su sonido basado en la guitarra y la actitud de "rock & roll", definieron el britpop en los 90.',
+                        influence: 'Influyeron en el indie rock, el britpop y el rock alternativo.',
+                        influenced: ['Blur', 'The Verve', 'Arctic Monkeys', 'The Killers'] },
+                    { id: 'thestrokes', name: 'The Strokes', decada: '00s',
+                        album: 'Is This It (2001)',
+                        reconocimiento: '🏆 Brit Award · Considerados los salvadores del rock en los 2000',
+                        desc: 'El revival del garage rock. Con su sonido basado en la guitarra y la actitud de "cool", revivieron el rock en los 2000.',
+                        influence: 'Influyeron en el indie rock, el garage rock y el rock alternativo.',
+                        influenced: ['Arctic Monkeys', 'The Killers', 'Kings of Leon', 'The Wombats'] },
+                    { id: 'whitestripes', name: 'The White Stripes', decada: '00s',
+                        album: 'White Blood Cells (2001)',
+                        reconocimiento: '🏆 6 Grammy · Considerados los reyes del garage rock moderno',
+                        desc: 'El garage rock más minimalista. Con Jack White al frente, crearon un sonido basado en la guitarra y la batería, con una estética única.',
+                        influence: 'Influyeron en el garage rock, el indie y el rock alternativo.',
+                        influenced: ['The Black Keys', 'Jack White', 'Royal Blood', 'Queens of the Stone Age'] },
+                    { id: 'killers', name: 'The Killers', decada: '00s',
+                        album: 'Hot Fuss (2004)',
+                        reconocimiento: '🏆 7 Brit Awards · 30M discos vendidos · 6 álbumes #1 en UK',
+                        desc: 'El rock de estadio del siglo XXI. Con su sonido basado en el synth-pop y el rock, son una de las bandas más exitosas de los 2000.',
+                        influence: 'Influyeron en el indie rock, el pop rock y el rock alternativo.',
+                        influenced: ['Kings of Leon', 'Imagine Dragons', 'Walk The Moon', 'Coldplay'] },
+                    { id: 'blackkeys', name: 'The Black Keys', decada: '00s',
+                        album: 'El Camino (2011)',
+                        reconocimiento: '🏆 6 Grammy · 5 álbumes #1 en Billboard',
+                        desc: 'El blues rock moderno. Con su sonido basado en la guitarra y la batería, revivieron el blues rock en los 2000.',
+                        influence: 'Influyeron en el blues rock, el garage rock y el rock alternativo.',
+                        influenced: ['Jack White', 'Royal Blood', 'Arctic Monkeys', 'Queens of the Stone Age'] },
+                    { id: 'qotsa', name: 'Queens of the Stone Age', decada: '00s',
+                        album: 'Songs for the Deaf (2002)',
+                        reconocimiento: '🏆 2 Grammy · Considerados los reyes del stoner rock moderno',
+                        desc: 'El rock alternativo con influencias de stoner y desert rock. Con Josh Homme al frente, su sonido es pesado y psicodélico.',
+                        influence: 'Influyeron en el stoner rock, el rock alternativo y el metal.',
+                        influenced: ['Arctic Monkeys', 'Royal Blood', 'The Black Keys', 'Jack White'] }
+                ]
+            },
+
+            // ---- 11. PROGRESIVO (MAGENTA) ----
+            prog: {
+                label: 'Progresivo',
+                color: '#e74c3c',
+                decada: '70s',
+                artists: [
+                    { id: 'yes', name: 'Yes', decada: '70s',
+                        album: 'Close to the Edge (1972)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2017) · 13 álbumes en Top 10 UK',
+                        desc: 'El prog sinfónico por excelencia. Técnica virtuosa, armonías complejas, letras místicas y estructuras épicas.',
+                        influence: 'Influyeron en el prog metal y el rock alternativo.',
+                        influenced: ['Rush', 'Dream Theater', 'Tool', 'Porcupine Tree'] },
+                    { id: 'genesis', name: 'Genesis', decada: '70s',
+                        album: 'Selling England by the Pound (1973)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2010) · 15 álbumes #1 en UK',
+                        desc: 'Prog con influencia teatral, folk y barroca. Con Peter Gabriel en sus inicios, su legado prog es inmortal.',
+                        influence: 'Influyeron en el art rock, el neo-prog y el rock alternativo.',
+                        influenced: ['Marillion', 'Radiohead', 'Muse', 'Steven Wilson'] },
+                    { id: 'elp', name: 'Emerson, Lake & Palmer', decada: '70s',
+                        album: 'Trilogy (1972)',
+                        reconocimiento: '🏆 Considerados el supergrupo más virtuoso del prog · 50M discos vendidos',
+                        desc: 'El prog más virtuoso y excesivo. Keith Emerson al teclado, Greg Lake al bajo y Carl Palmer a la batería.',
+                        influence: 'Influyeron en el prog metal, el metal sinfónico y el rock experimental.',
+                        influenced: ['Dream Theater', 'Symphony X', 'Rush', 'Tool'] },
+                    { id: 'rush', name: 'Rush', decada: '70s',
+                        album: '2112 (1976)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2013) · 7 Grammy · 40M discos vendidos',
+                        desc: 'El power trío más influyente del rock. Geddy Lee, Alex Lifeson y Neil Peart crearon un sonido que mezcla hard rock, prog y metal.',
+                        influence: 'Influyeron en el metal progresivo, el rock alternativo y el hard rock.',
+                        influenced: ['Metallica', 'Dream Theater', 'Tool', 'Foo Fighters', 'Muse'] },
+                    { id: 'alanparsons', name: 'Alan Parsons Project', decada: '70s',
+                        album: 'I Robot (1977)',
+                        reconocimiento: '🏆 15 álbumes de oro · Ingeniero de sonido de The Beatles y Pink Floyd',
+                        desc: 'El prog con producción impecable. Alan Parsons creó un sonido pulido y conceptual que influenció a bandas de todo el mundo.',
+                        influence: 'Influyeron en el synth-pop, el rock alternativo y el prog pop.',
+                        influenced: ['Air', 'Daft Punk', 'Radiohead', 'Tame Impala'] },
+                    { id: 'elo', name: 'Electric Light Orchestra (ELO)', decada: '70s',
+                        album: 'Out of the Blue (1977)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2017) · 50M discos vendidos',
+                        desc: 'El prog pop por excelencia. Con su mezcla de rock, clásica y pop, crearon un sonido único.',
+                        influence: 'Influyeron en el pop rock, el synth-pop y el indie.',
+                        influenced: ['The Killers', 'Panic! At The Disco', 'The Strokes', 'Coldplay'] },
+                    { id: 'supertramp', name: 'Supertramp', decada: '70s',
+                        album: 'Breakfast in America (1979)',
+                        reconocimiento: '🏆 Brit Award · 40M discos vendidos · Álbum con 4 hits mundiales',
+                        desc: 'El prog pop más exitoso. Crearon himnos como "The Logical Song" que siguen sonando en la radio.',
+                        influence: 'Influyeron en el pop rock, el indie y el rock alternativo.',
+                        influenced: ['Coldplay', 'Keane', 'The Fray', 'OneRepublic'] },
+                    { id: 'chicago', name: 'Chicago', decada: '70s',
+                        album: 'Chicago V (1972)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2016) · 100M discos vendidos · 21 álbumes de oro',
+                        desc: 'El rock con instrumentos de viento por excelencia. Con su mezcla de rock, jazz y pop, son una de las bandas más exitosas.',
+                        influence: 'Influyeron en el pop rock, el jazz fusion y el rock alternativo.',
+                        influenced: ['Blood, Sweat & Tears', 'Tower of Power', 'Earth, Wind & Fire', 'Steely Dan'] },
+                    { id: 'direstraits', name: 'Dire Straits', decada: '80s',
+                        album: 'Brothers in Arms (1985)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2018) · 4 Grammy · 120M discos vendidos',
+                        desc: 'El rock con alma de blues y jazz. Con Mark Knopfler al frente, su sonido es elegante, melódico y lleno de técnica.',
+                        influence: 'Influyeron en el blues rock, el rock alternativo y el indie.',
+                        influenced: ['John Mayer', 'Eric Clapton', 'The Killers', 'Fleet Foxes'] },
+                    { id: 'fleetwoodmac', name: 'Fleetwood Mac', decada: '70s',
+                        album: 'Rumours (1977)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1998) · 5 Grammy · 120M discos vendidos',
+                        desc: 'El pop rock más melódico y emocional. Con su sonido basado en las armonías vocales y las guitarras, son una de las bandas más queridas.',
+                        influence: 'Influyeron en el pop rock, el indie y el rock alternativo.',
+                        influenced: ['The Killers', 'The Strokes', 'Arctic Monkeys', 'Coldplay'] },
+                    { id: 'police', name: 'The Police', decada: '80s',
+                        album: 'Synchronicity (1983)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2003) · 5 Grammy · 75M discos vendidos',
+                        desc: 'El rock con influencias de reggae y new wave. Con Sting al frente, su sonido es único y ha influenciado a bandas de todo el mundo.',
+                        influence: 'Influyeron en el new wave, el rock alternativo y el pop rock.',
+                        influenced: ['The Killers', 'Arctic Monkeys', 'Coldplay', 'Muse'] }
+                ]
+            },
+
+            // ---- 12. EXPERIMENTAL (BLANCO) ----
+            experimental: {
+                label: 'Experimental',
+                color: '#ecf0f1',
+                decada: '70s',
+                artists: [
+                    { id: 'kingcrimson', name: 'King Crimson', decada: '70s',
+                        album: 'In the Court of the Crimson King (1969)',
+                        reconocimiento: '🏆 Considerados los padres del rock experimental · Influencia en el metal progresivo',
+                        desc: 'La banda más influyente del rock experimental. Con Robert Fripp, su sonido ha evolucionado desde el prog hasta el metal experimental.',
+                        influence: 'Influyeron en el prog metal, el rock experimental y el post-rock.',
+                        influenced: ['Tool', 'Meshuggah', 'Radiohead', 'Porcupine Tree'] },
+                    { id: 'frankzappa', name: 'Frank Zappa', decada: '70s',
+                        album: 'Hot Rats (1969)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1995) · Grammy a la Trayectoria · 60 álbumes',
+                        desc: 'El genio más excéntrico del rock. Su música mezcla rock, jazz, clásica y comedia.',
+                        influence: 'Influyó en el art rock, el rock experimental y el jazz fusion.',
+                        influenced: ['Primus', 'Mr. Bungle', 'Ween', 'Captain Beefheart'] },
+                    { id: 'velvet', name: 'Velvet Underground', decada: '60s',
+                        album: 'The Velvet Underground & Nico (1967)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1996) · Considerados la banda más influyente del underground',
+                        desc: 'La banda más influyente del underground. Con su sonido crudo y letras explícitas, inspiraron a todo el rock alternativo.',
+                        influence: 'Influyeron en el punk, el rock alternativo y el indie.',
+                        influenced: ['R.E.M.', 'Nirvana', 'Sonic Youth', 'The Strokes'] },
+                    { id: 'captainbeefheart', name: 'Captain Beefheart', decada: '70s',
+                        album: 'Trout Mask Replica (1969)',
+                        reconocimiento: '🏆 Considerado uno de los álbumes más experimentales de la historia',
+                        desc: 'El rock más experimental y vanguardista. Con su sonido caótico y su voz gutural, es una de las figuras más excéntricas del rock.',
+                        influence: 'Influyó en el art rock, el experimental y el punk.',
+                        influenced: ['Frank Zappa', 'Sonic Youth', 'Tom Waits', 'Primus'] },
+                    { id: 'canband', name: 'Can', decada: '70s',
+                        album: 'Tago Mago (1971)',
+                        reconocimiento: '🏆 Considerados los reyes del krautrock · Influencia en el post-rock',
+                        desc: 'El krautrock por excelencia. Con su sonido repetitivo y psicodélico, son una de las bandas más influyentes de la música experimental.',
+                        influence: 'Influyeron en el post-rock, la electrónica y el rock alternativo.',
+                        influenced: ['Radiohead', 'Sonic Youth', 'Tame Impala', 'Kraftwerk'] }
+                ]
+            },
+
+            // ---- 13. GRUNGE (MENTA) ----
+            grunge: {
+                label: 'Grunge',
+                color: '#1abc9c',
+                decada: '90s',
+                artists: [
+                    { id: 'nirvana', name: 'Nirvana', decada: '90s',
+                        album: 'Nevermind (1991)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2014) · 2 Grammy · 75M discos vendidos',
+                        desc: 'La banda que cambió el rock para siempre. Kurt Cobain canalizó el desencanto de una generación con guitarras distorsionadas.',
+                        influence: 'El grunge mató el hair metal y dio paso al rock alternativo.',
+                        influenced: ['Foo Fighters', 'Pearl Jam', 'Radiohead', 'Courtney Barnett'] },
+                    { id: 'pearljam', name: 'Pearl Jam', decada: '90s',
+                        album: 'Ten (1991)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2017) · 3 Grammy · 85M discos vendidos',
+                        desc: 'El grunge con alma de rock clásico. Con Eddie Vedder en la voz, su sonido es más melódico y cercano al rock de estadio.',
+                        influence: 'Influyeron en el rock alternativo, el post-grunge y el rock de estadio.',
+                        influenced: ['Stone Temple Pilots', 'Creed', 'Nickelback', 'The Smashing Pumpkins'] },
+                    { id: 'aliceinchains', name: 'Alice in Chains', decada: '90s',
+                        album: 'Dirt (1992)',
+                        reconocimiento: '🏆 10 álbumes en Top 10 · Considerados los más pesados del grunge',
+                        desc: 'El grunge más oscuro y pesado. Con armonías vocales que recuerdan a los 70 y un sonido cercano al metal.',
+                        influence: 'Influyeron en el rock alternativo y el metal alternativo.',
+                        influenced: ['Godsmack', 'Staind', 'Breaking Benjamin', 'Days of the New'] },
+                    { id: 'soundgarden', name: 'Soundgarden', decada: '90s',
+                        album: 'Superunknown (1994)',
+                        reconocimiento: '🏆 2 Grammy · Considerados los más técnicos del grunge',
+                        desc: 'El grunge más complejo y técnico. Con Chris Cornell en la voz, su sonido mezcla metal, punk y psicodelia.',
+                        influence: 'Influyeron en el rock alternativo y el metal progresivo.',
+                        influenced: ['Audioslave', 'Queens of the Stone Age', 'Mastodon', 'Deftones'] },
+                    { id: 'stonetemplepilots', name: 'Stone Temple Pilots', decada: '90s',
+                        album: 'Core (1992)',
+                        reconocimiento: '🏆 15M discos vendidos · 4 álbumes #1 en Billboard',
+                        desc: 'El grunge más melódico y pegadizo. Con Scott Weiland en la voz, su sonido es una mezcla de rock y pop.',
+                        influence: 'Influyeron en el rock alternativo y el post-grunge.',
+                        influenced: ['Creed', 'Nickelback', 'Breaking Benjamin', '3 Doors Down'] }
+                ]
+            },
+
+            // ---- 14. DAMAS DEL ROCK (ROSA FUERTE) ----
+            damas: {
+                label: 'Damas del Rock',
+                color: '#e91e63',
+                decada: '70s',
+                artists: [
+                    { id: 'janis', name: 'Janis Joplin', decada: '60s',
+                        album: 'Pearl (1971)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1995) · Grammy a la Trayectoria',
+                        desc: 'La reina del blues rock. Con su voz desgarrada y su espíritu libre, rompió todos los moldes del rock en los 60.',
+                        influence: 'Influyó en el rock, el blues y el soul.',
+                        influenced: ['Stevie Nicks', 'Grace Slick', 'Patti Smith', 'Courtney Love'] },
+                    { id: 'pattismith', name: 'Patti Smith', decada: '70s',
+                        album: 'Horses (1975)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2007) · Premio Polar Music · Madrina del punk',
+                        desc: 'La poeta del punk. Con su voz spoken word y su actitud andrógina, es la madrina del punk.',
+                        influence: 'Influyó en el punk, el post-punk y el rock alternativo.',
+                        influenced: ['The Pretenders', 'Sonic Youth', 'Hole', 'Bikini Kill'] },
+                    { id: 'pretenders', name: 'The Pretenders', decada: '80s',
+                        album: 'Pretenders (1980)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2005) · 25M discos vendidos',
+                        desc: 'Lideradas por Chrissie Hynde, mezclaron punk, new wave y rock clásico con una actitud feroz.',
+                        influence: 'Influyeron en el rock alternativo y el indie rock.',
+                        influenced: ['The Strokes', 'Yeah Yeah Yeahs', 'The Kills', 'Arctic Monkeys'] },
+                    { id: 'eurythmics', name: 'Eurythmics', decada: '80s',
+                        album: 'Sweet Dreams (Are Made of This) (1983)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2022) · 4 Grammy · 75M discos vendidos',
+                        desc: 'El dúo de Annie Lennox y Dave Stewart revolucionó el pop rock de los 80 con su mezcla de new wave, synth-pop y soul.',
+                        influence: 'Influyeron en el synth-pop, el rock alternativo y el pop moderno.',
+                        influenced: ['Lady Gaga', 'Gwen Stefani', 'Miley Cyrus', 'Florence Welch'] },
+                    { id: 'bonnieraitt', name: 'Bonnie Raitt', decada: '70s',
+                        album: 'Nick of Time (1989)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2000) · 10 Grammy · 30M discos vendidos',
+                        desc: 'La reina del blues rock y el slide guitar. Con su técnica impecable, ha sido una de las guitarristas más respetadas por décadas.',
+                        influence: 'Influyó en el blues rock y el rock alternativo.',
+                        influenced: ['Sheryl Crow', 'Susan Tedeschi', 'Grace Potter', 'Kacey Musgraves'] },
+                    { id: 'heartband', name: 'Heart', decada: '70s',
+                        album: 'Dreamboat Annie (1976)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2013) · 35M discos vendidos',
+                        desc: 'El hard rock con voz femenina por excelencia. Con Ann y Nancy Wilson, crearon himnos como "Barracuda" que siguen siendo referentes del rock.',
+                        influence: 'Influyeron en el hard rock, el rock alternativo y el grunge.',
+                        influenced: ['Joan Jett', 'Lita Ford', 'The Go-Go\'s', 'Courtney Love'] },
+                    { id: 'joanjett', name: 'Joan Jett', decada: '80s',
+                        album: 'I Love Rock \'n Roll (1981)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2015) · 30M discos vendidos',
+                        desc: 'La reina del rock and roll. Con su actitud rebelde y su sonido basado en el punk y el rock, es una de las figuras más influyentes del rock femenino.',
+                        influence: 'Influyó en el punk, el hard rock y el rock alternativo.',
+                        influenced: ['Courtney Love', 'The Go-Go\'s', 'Bikini Kill', 'L7'] },
+                    { id: 'alanis', name: 'Alanis Morissette', decada: '90s',
+                        album: 'Jagged Little Pill (1995)',
+                        reconocimiento: '🏆 7 Grammy · 33M discos vendidos · Álbum debut más vendido de una mujer',
+                        desc: 'La reina del rock alternativo de los 90. Con su álbum "Jagged Little Pill", revolucionó el rock con letras honestas y su voz poderosa.',
+                        influence: 'Influyó en el rock alternativo, el pop rock y el indie.',
+                        influenced: ['Liz Phair', 'Tori Amos', 'Fiona Apple', 'Sheryl Crow'] }
+                ]
+            },
+
+            // ---- 15. GUITAR HEROES (AMARILLO) ----
+            guitarheroes: {
+                label: 'Guitar Heroes',
+                color: '#f1c40f',
+                decada: '80s',
+                artists: [
+                    { id: 'joesatriani', name: 'Joe Satriani', decada: '80s',
+                        album: 'Surfing with the Alien (1987)',
+                        reconocimiento: '🏆 14 Grammy · 10M discos vendidos · Profesor de Steve Vai y Kirk Hammett',
+                        desc: 'El guitarrista de los guitarristas. Con su técnica impecable y su creatividad, es uno de los más influyentes del rock instrumental.',
+                        influence: 'Influyó en el shred, el rock instrumental y el metal.',
+                        influenced: ['Steve Vai', 'John Petrucci', 'Kirk Hammett', 'Buckethead'] },
+                    { id: 'stevevai', name: 'Steve Vai', decada: '90s',
+                        album: 'Passion and Warfare (1990)',
+                        reconocimiento: '🏆 3 Grammy · 15M discos vendidos · Alumno de Joe Satriani',
+                        desc: 'El guitarrista más virtuoso y excéntrico. Con su técnica y su creatividad, ha llevado la guitarra a límites insospechados.',
+                        influence: 'Influyó en el shred, el rock instrumental y el metal.',
+                        influenced: ['Yngwie Malmsteen', 'John Petrucci', 'Buckethead', 'Guthrie Govan'] },
+                    { id: 'ericljohnson', name: 'Eric Johnson', decada: '90s',
+                        album: 'Ah Via Musicom (1990)',
+                        reconocimiento: '🏆 Grammy · 5M discos vendidos · Considerado el guitarrista más limpio',
+                        desc: 'El guitarrista más melódico y limpio. Con su técnica y su sonido cristalino, es uno de los guitarristas más respetados.',
+                        influence: 'Influyó en el blues rock, el rock instrumental y el pop rock.',
+                        influenced: ['John Mayer', 'Joe Bonamassa', 'Robin Trower', 'Steve Vai'] },
+                    { id: 'johnpetrucci', name: 'John Petrucci (Dream Theater)', decada: '90s',
+                        album: 'Images and Words (1992)',
+                        reconocimiento: '🏆 2 Grammy · Considerado el guitarrista del metal progresivo',
+                        desc: 'El guitarrista del metal progresivo por excelencia. Con su técnica y su creatividad, es uno de los guitarristas más influyentes del metal moderno.',
+                        influence: 'Influyó en el metal progresivo, el shred y el rock instrumental.',
+                        influenced: ['Mark Tremonti', 'Misha Mansoor', 'Tosin Abasi', 'John Browne'] },
+                    { id: 'jeffbeck', name: 'Jeff Beck', decada: '70s',
+                        album: 'Blow by Blow (1975)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2009) · 8 Grammy · Considerado uno de los 5 mejores guitarristas',
+                        desc: 'El guitarrista más innovador del rock. Con su técnica y su creatividad, ha llevado la guitarra a territorios inexplorados.',
+                        influence: 'Influyó en el blues rock, el rock instrumental y el metal.',
+                        influenced: ['Eric Clapton', 'Jimmy Page', 'Jimi Hendrix', 'Steve Vai'] }
+                ]
+            },
+
+            // ---- 16. ROCK SUREÑO (NARANJA OSCURO) ----
+            sureno: {
+                label: 'Rock Sureño',
+                color: '#e67e22',
+                decada: '70s',
+                artists: [
+                    { id: 'lynyrd', name: 'Lynyrd Skynyrd', decada: '70s',
+                        album: 'Pronounced \'Lĕh-\'nérd \'Skin-\'nérd (1973)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2006) · 30M discos vendidos',
+                        desc: 'El rock sureño por excelencia. Con su mezcla de rock, blues y country, crearon himnos como "Free Bird".',
+                        influence: 'Influyeron en el rock sureño, el country rock y el rock alternativo.',
+                        influenced: ['The Allman Brothers', 'Molly Hatchet', 'Black Oak Arkansas', 'Creedence'] },
+                    { id: 'allmanbrothers', name: 'The Allman Brothers Band', decada: '70s',
+                        album: 'At Fillmore East (1971)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (1995) · 5 álbumes de oro',
+                        desc: 'El blues rock sureño con influencias de jazz. Con su técnica y su creatividad, son una de las bandas más influyentes del rock.',
+                        influence: 'Influyeron en el blues rock, el rock sureño y el jam band.',
+                        influenced: ['Lynyrd Skynyrd', 'Widespread Panic', 'Dave Matthews', 'Gov\'t Mule'] },
+                    { id: 'mollyhatchet', name: 'Molly Hatchet', decada: '80s',
+                        album: 'Molly Hatchet (1978)',
+                        reconocimiento: '🏆 3 álbumes de platino · Considerados los reyes del rock sureño pesado',
+                        desc: 'El rock sureño más pesado. Con su sonido basado en la guitarra y su actitud de "rock & roll", son una de las bandas más representativas del género.',
+                        influence: 'Influyeron en el rock sureño, el hard rock y el metal.',
+                        influenced: ['Black Oak Arkansas', 'Creedence', 'Lynyrd Skynyrd', 'Pantera'] }
+                ]
+            },
+
+            // ---- 17. INDIE / GARAGE REVIVAL (AZUL CLARO) ----
+            indie: {
+                label: 'Indie / Garage Revival',
+                color: '#3498db',
+                decada: '00s',
+                artists: [
+                    { id: 'thestrokes2', name: 'The Strokes', decada: '00s',
+                        album: 'Is This It (2001)',
+                        reconocimiento: '🏆 Brit Award · Considerados los salvadores del rock en los 2000',
+                        desc: 'El revival del garage rock. Con su sonido basado en la guitarra y la actitud de "cool", revivieron el rock en los 2000.',
+                        influence: 'Influyeron en el indie rock, el garage rock y el rock alternativo.',
+                        influenced: ['Arctic Monkeys', 'The Killers', 'Kings of Leon', 'The Wombats'] },
+                    { id: 'whitestripes2', name: 'The White Stripes', decada: '00s',
+                        album: 'White Blood Cells (2001)',
+                        reconocimiento: '🏆 6 Grammy · Considerados los reyes del garage rock moderno',
+                        desc: 'El garage rock más minimalista. Con Jack White al frente, crearon un sonido basado en la guitarra y la batería.',
+                        influence: 'Influyeron en el garage rock, el indie y el rock alternativo.',
+                        influenced: ['The Black Keys', 'Jack White', 'Royal Blood', 'Queens of the Stone Age'] },
+                    { id: 'killers2', name: 'The Killers', decada: '00s',
+                        album: 'Hot Fuss (2004)',
+                        reconocimiento: '🏆 7 Brit Awards · 30M discos vendidos · 6 álbumes #1 en UK',
+                        desc: 'El rock de estadio del siglo XXI. Con su sonido basado en el synth-pop y el rock, son una de las bandas más exitosas de los 2000.',
+                        influence: 'Influyeron en el indie rock, el pop rock y el rock alternativo.',
+                        influenced: ['Kings of Leon', 'Imagine Dragons', 'Walk The Moon', 'Coldplay'] },
+                    { id: 'blackkeys2', name: 'The Black Keys', decada: '00s',
+                        album: 'El Camino (2011)',
+                        reconocimiento: '🏆 6 Grammy · 5 álbumes #1 en Billboard',
+                        desc: 'El blues rock moderno. Con su sonido basado en la guitarra y la batería, revivieron el blues rock en los 2000.',
+                        influence: 'Influyeron en el blues rock, el garage rock y el rock alternativo.',
+                        influenced: ['Jack White', 'Royal Blood', 'Arctic Monkeys', 'Queens of the Stone Age'] },
+                    { id: 'qotsa2', name: 'Queens of the Stone Age', decada: '00s',
+                        album: 'Songs for the Deaf (2002)',
+                        reconocimiento: '🏆 2 Grammy · Considerados los reyes del stoner rock moderno',
+                        desc: 'El rock alternativo con influencias de stoner y desert rock. Con Josh Homme al frente, su sonido es pesado y psicodélico.',
+                        influence: 'Influyeron en el stoner rock, el rock alternativo y el metal.',
+                        influenced: ['Arctic Monkeys', 'Royal Blood', 'The Black Keys', 'Jack White'] }
+                ]
+            },
+
+            // ---- 18. ROCK GÓTICO (PÚRPURA OSCURO) ----
+            gotico: {
+                label: 'Rock Gótico',
+                color: '#8e44ad',
+                decada: '80s',
+                artists: [
+                    { id: 'thecure2', name: 'The Cure', decada: '80s',
+                        album: 'Disintegration (1989)',
+                        reconocimiento: '🏆 Salón de la Fama del Rock (2019) · 30M discos vendidos',
+                        desc: 'El rock gótico por excelencia. Con Robert Smith al frente, su sonido mezcla post-punk, pop y atmósferas oscuras.',
+                        influence: 'Influyeron en el rock gótico, el indie y el rock alternativo.',
+                        influenced: ['The Smiths', 'Radiohead', 'Interpol', 'The Strokes'] },
+                    { id: 'siouxsie2', name: 'Siouxsie and the Banshees', decada: '80s',
+                        album: 'Juju (1981)',
+                        reconocimiento: '🏆 Considerados los reyes del post-punk gótico',
+                        desc: 'El post-punk más oscuro y teatral. Con Siouxsie Sioux en la voz, crearon un sonido que influenció a bandas góticas.',
+                        influence: 'Influyeron en el rock gótico, el post-punk y el indie.',
+                        influenced: ['The Cure', 'Joy Division', 'The Smiths', 'Nirvana'] },
+                    { id: 'bauhaus', name: 'Bauhaus', decada: '80s',
+                        album: 'In the Flat Field (1980)',
+                        reconocimiento: '🏆 Considerados los padres del rock gótico',
+                        desc: 'El rock gótico más teatral y oscuro. Con Peter Murphy en la voz, crearon un sonido que influenció a generaciones.',
+                        influence: 'Influyeron en el rock gótico, el industrial y el rock alternativo.',
+                        influenced: ['The Cure', 'Nine Inch Nails', 'Sisters of Mercy', 'Marilyn Manson'] },
+                    { id: 'sistersofmercy', name: 'Sisters of Mercy', decada: '80s',
+                        album: 'First and Last and Always (1985)',
+                        reconocimiento: '🏆 Considerados los reyes del rock gótico metalero',
+                        desc: 'El rock gótico con influencias de metal y electro. Con su sonido pesado y oscuro, son una de las bandas más influyentes del género.',
+                        influence: 'Influyeron en el rock gótico, el metal gótico y el industrial.',
+                        influenced: ['Nine Inch Nails', 'Marilyn Manson', 'Type O Negative', 'The 69 Eyes'] }
+                ]
+            },
+
+            // ---- 19. POST-ROCK (GRIS CLARO) ----
+            postrock: {
+                label: 'Post-Rock',
+                color: '#aaa',
+                decada: '90s',
+                artists: [
+                    { id: 'godpseed', name: 'Godspeed You! Black Emperor', decada: '90s',
+                        album: 'Lift Yr. Skinny Fists Like Antennas to Heaven! (2000)',
+                        reconocimiento: '🏆 Premio Polaris · Considerados los reyes del post-rock',
+                        desc: 'El post-rock más épico y cinematográfico. Con sus composiciones largas y atmosféricas, han redefinido el rock instrumental.',
+                        influence: 'Influyeron en el post-rock, el rock experimental y la música ambiental.',
+                        influenced: ['Sigur Rós', 'Mogwai', 'Explosions in the Sky', 'Mono'] },
+                    { id: 'sigurros', name: 'Sigur Rós', decada: '00s',
+                        album: 'Ágætis byrjun (1999)',
+                        reconocimiento: '🏆 5 álbumes #1 en Islandia · Considerados los reyes del post-rock melódico',
+                        desc: 'El post-rock más etéreo y melódico. Con su sonido basado en el piano, las guitarras y la voz de Jónsi, crean paisajes sonoros únicos.',
+                        influence: 'Influyeron en el post-rock, el indie y la música ambiental.',
+                        influenced: ['Explosions in the Sky', 'Mogwai', 'This Will Destroy You', 'Hammock'] },
+                    { id: 'mogwai', name: 'Mogwai', decada: '00s',
+                        album: 'Young Team (1997)',
+                        reconocimiento: '🏆 10 álbumes en Top 20 UK · Considerados los reyes del post-rock pesado',
+                        desc: 'El post-rock más pesado y dinámico. Con su sonido basado en la guitarra y la dinámica de "quiet-loud-quiet".',
+                        influence: 'Influyeron en el post-rock, el indie y el rock alternativo.',
+                        influenced: ['Explosions in the Sky', 'This Will Destroy You', 'Mono', 'And So I Watch You From Afar'] }
+                ]
+            }
+        };
+
+        // ================================================================
+        //  LÓGICA COMPLETA
+        // ================================================================
+
+        const lineSelector = document.getElementById('lineSelector');
+        const artistsGrid = document.getElementById('artistsGrid');
+        const artistDetail = document.getElementById('artistDetail');
+        const detailContent = document.getElementById('detailContent');
+        const welcome = document.getElementById('welcome');
+        const leyenda = document.getElementById('leyenda');
+        const searchInput = document.getElementById('searchInput');
+        const closeDetail = document.getElementById('closeDetail');
+
+        let currentLine = null;
+        let currentDecada = 'todas';
+        let searchTerm = '';
+        let showMetro = false;
+
+        // ===== ESTADÍSTICAS =====
+        function updateStats() {
+            let totalArtists = 0;
+            let totalLines = Object.keys(data).length;
+            let decadas = new Set();
+
+            Object.keys(data).forEach(key => {
+                const line = data[key];
+                totalArtists += line.artists.length;
+                line.artists.forEach(a => {
+                    if (a.decada) decadas.add(a.decada);
+                });
+            });
+
+            document.getElementById('totalArtists').textContent = totalArtists;
+            document.getElementById('totalLines').textContent = totalLines;
+            document.getElementById('totalDecadas').textContent = decadas.size;
+        }
+
+        // ===== LEYENDA =====
+        Object.keys(data).forEach(key => {
+            const line = data[key];
+            const item = document.createElement('span');
+            item.className = 'leyenda-item';
+            item.innerHTML = `<span class="color" style="background:${line.color};"></span> ${line.label}`;
+            leyenda.appendChild(item);
+        });
+
+        // ===== BOTONES DE LÍNEAS =====
+        const lineKeys = Object.keys(data);
+        lineKeys.forEach((key) => {
+            const line = data[key];
+            const btn = document.createElement('button');
+            btn.className = 'line-btn';
+            btn.dataset.line = key;
+            btn.textContent = line.label;
+            btn.addEventListener('click', () => selectLine(key));
+            lineSelector.appendChild(btn);
+        });
+
+        // ===== FILTRO DE DÉCADA =====
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentDecada = btn.dataset.decada;
+                renderCurrentView();
+            });
+        });
+
+        // ===== BÚSQUEDA =====
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value.toLowerCase().trim();
+            renderCurrentView();
+        });
+
+        // ===== CIERRE DE DETALLE =====
+        closeDetail.addEventListener('click', () => {
+            artistDetail.classList.remove('show');
+        });
+
+        // ===== TOGGLE MAPA =====
+        document.getElementById('toggleMetroBtn').addEventListener('click', () => {
+            showMetro = !showMetro;
+            const metro = document.getElementById('metroMap');
+            const btn = document.getElementById('toggleMetroBtn');
+            if (showMetro) {
+                metro.classList.add('show');
+                btn.textContent = '🗺️ ocultar mapa';
+                renderMetroMap();
+            } else {
+                metro.classList.remove('show');
+                btn.textContent = '🗺️ ver mapa de metro';
+            }
+        });
+
+        // ===== RENDER MAPA METRO =====
+        function renderMetroMap() {
+            const container = document.getElementById('metroMap');
+            const lineCount = Object.keys(data).length;
+            const height = Math.max(400, lineCount * 30 + 50);
+            const width = 900;
+
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="background:transparent;">`;
+
+            let idx = 0;
+            const step = Math.min(28, (height - 50) / lineCount);
+
+            for (const [lineKey, line] of Object.entries(data)) {
+                const y = 30 + idx * step;
+                const color = line.color;
+
+                svg += `<line x1="20" y1="${y}" x2="${width - 20}" y2="${y}" stroke="${color}" stroke-width="3" opacity="0.5" />`;
+                svg += `<text x="15" y="${y - 5}" font-size="6.5" fill="${color}" font-family="Orbitron" font-weight="700" letter-spacing="0.5">${line.label.toUpperCase()}</text>`;
+
+                const artistCount = line.artists.length;
+                const spacing = Math.min(100, (width - 180) / artistCount);
+                let xPos = 120;
+                line.artists.forEach((artist, i) => {
+                    const x = xPos + i * spacing;
+                    svg += `<circle cx="${x}" cy="${y}" r="4.5" fill="${color}" stroke="#0d0d1a" stroke-width="2" class="station" data-artist="${artist.id}" />`;
+                    const label = artist.name.length > 14 ? artist.name.substring(0, 12) + '..' : artist.name;
+                    svg += `<text x="${x}" y="${y + 13}" font-size="5" fill="#b0b0d0" text-anchor="middle" font-family="Rajdhani" font-weight="600" class="station-label" data-artist="${artist.id}">${label}</text>`;
+                });
+
+                idx++;
+            }
+
+            svg += `</svg>`;
+            container.innerHTML = svg;
+
+            container.querySelectorAll('.station, .station-label').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const id = el.dataset.artist;
+                    if (id) selectArtistById(id);
+                });
+            });
+        }
+
+        // ===== SELECCIONAR LÍNEA =====
+        function selectLine(lineKey) {
+            currentLine = lineKey;
+            const line = data[lineKey];
+
+            document.querySelectorAll('.line-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.line-btn[data-line="${lineKey}"]`).classList.add('active');
+
+            welcome.style.display = 'none';
+            artistDetail.classList.remove('show');
+
+            renderArtists(lineKey);
+
+            if (line.artists.length > 0) {
+                selectArtistById(line.artists[0].id);
+            }
+        }
+
+        // ===== RENDER ARTISTAS CON FILTROS =====
+        function renderCurrentView() {
+            if (currentLine) {
+                renderArtists(currentLine);
+            } else {
+                renderSearchResults();
+            }
+        }
+
+        function renderArtists(lineKey) {
+            const line = data[lineKey];
+            let artists = line.artists;
+
+            if (currentDecada !== 'todas') {
+                artists = artists.filter(a => a.decada === currentDecada);
+            }
+            if (searchTerm) {
+                artists = artists.filter(a => a.name.toLowerCase().includes(searchTerm));
+            }
+
+            artistsGrid.innerHTML = '';
+
+            artists.forEach((artist) => {
+                const chip = document.createElement('div');
+                chip.className = 'artist-chip';
+                const initial = artist.name.charAt(0).toUpperCase();
+                chip.innerHTML = `
+                        <span class="avatar">${initial}</span>
+                        <span class="name-text">${artist.name}</span>
+                    `;
+                chip.dataset.id = artist.id;
+                chip.addEventListener('click', () => selectArtistById(artist.id));
+                artistsGrid.appendChild(chip);
+            });
+
+            if (artists.length === 0) {
+                artistsGrid.innerHTML = `<div class="no-artists">⋮ no hay coincidencias ⋮</div>`;
+            }
+        }
+
+        function renderSearchResults() {
+            let results = [];
+            for (const [lineKey, line] of Object.entries(data)) {
+                line.artists.forEach(a => {
+                    if (a.name.toLowerCase().includes(searchTerm)) {
+                        results.push({ ...a, line: lineKey });
+                    }
+                });
+            }
+
+            if (currentDecada !== 'todas') {
+                results = results.filter(a => a.decada === currentDecada);
+            }
+
+            artistsGrid.innerHTML = '';
+
+            results.forEach((artist) => {
+                const chip = document.createElement('div');
+                chip.className = 'artist-chip';
+                const initial = artist.name.charAt(0).toUpperCase();
+                chip.innerHTML = `
+                        <span class="avatar">${initial}</span>
+                        <span class="name-text">${artist.name}</span>
+                    `;
+                chip.dataset.id = artist.id;
+                chip.addEventListener('click', () => selectArtistById(artist.id));
+                artistsGrid.appendChild(chip);
+            });
+
+            if (results.length === 0) {
+                artistsGrid.innerHTML = `<div class="no-artists">⋮ no hay coincidencias ⋮</div>`;
+            }
+        }
+
+        // ===== SELECCIONAR ARTISTA POR ID =====
+        function selectArtistById(artistId) {
+            let found = null;
+            let foundLine = null;
+            for (const [lineKey, line] of Object.entries(data)) {
+                const artist = line.artists.find(a => a.id === artistId);
+                if (artist) {
+                    found = artist;
+                    foundLine = lineKey;
+                    break;
+                }
+            }
+
+            if (!found) return;
+
+            document.querySelectorAll('.artist-chip').forEach(ch => {
+                ch.classList.toggle('active', ch.dataset.id === artistId);
+            });
+
+            const lineColor = data[foundLine].color;
+
+            detailContent.innerHTML = `
+                    <div class="top">
+                        <span class="name">${found.name}</span>
+                        <div class="tags">
+                            <span class="tag" style="border-color:${lineColor}44; color:${lineColor};">${data[foundLine].label}</span>
+                            ${found.decada ? `<span class="decada">${found.decada}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="body">
+                        <div class="desc">
+                            <strong>▸</strong> ${found.desc}
+                        </div>
+                        ${found.album ? `
+                        <div class="album-box" style="border-color:${lineColor};">
+                            <span class="album-icon">💿</span>
+                            <span class="album-text"><strong>Álbum destacado:</strong> ${found.album}</span>
+                        </div>
+                        ` : ''}
+                        ${found.reconocimiento ? `
+                        <div class="reconocimiento" style="border-color:${lineColor};">
+                            <span class="rec-icon">🏆</span>
+                            <span class="rec-text"><strong>Reconocimiento:</strong> ${found.reconocimiento}</span>
+                        </div>
+                        ` : ''}
+                        <div class="info-box" style="border-color:${lineColor};">
+                            <h3 style="color:${lineColor};">✦ influencia y legado</h3>
+                            <ul>
+                                ${found.influenced.map(i => `<li>${i}</li>`).join('')}
+                            </ul>
+                            <div class="info-text">
+                                <strong style="color:${lineColor};">↳ influencia:</strong> ${found.influence}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            artistDetail.classList.add('show');
+            welcome.style.display = 'none';
+
+            if (currentLine !== foundLine) {
+                currentLine = foundLine;
+                document.querySelectorAll('.line-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.line-btn[data-line="${foundLine}"]`).classList.add('active');
+                renderArtists(foundLine);
+            }
+        }
+
+        // ===== INICIALIZAR =====
+        updateStats();
+        selectLine('hardrock');
+
+        document.addEventListener('click', (e) => {
+            if (artistDetail.classList.contains('show')) {
+                const isInside = artistDetail.contains(e.target) || e.target.closest('.artist-chip') || e.target.closest('.station') || e.target.closest('.station-label');
+                if (!isInside) {
+                    artistDetail.classList.remove('show');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
